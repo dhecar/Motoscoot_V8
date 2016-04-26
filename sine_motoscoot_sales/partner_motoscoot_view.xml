@@ -1,0 +1,19 @@
+<openerp>
+	<data>
+	<record model="ir.ui.view" id="partner_motoscoot_form_view">
+            <field name="name">partner.scooter.name</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form" />
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+        	
+		        <field name="vat"  position="replace">
+			        <field name="vat" attrs="{'required':[('is_company','=',True)]}"/>
+		        </field>
+            </field>
+         </record>
+
+ 
+        
+	</data>
+</openerp>
