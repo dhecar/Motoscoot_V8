@@ -1,0 +1,106 @@
+<?xml version="1.0"?>
+<openerp>
+  <data>
+
+        <record id="qz_print_window_form" model="ir.ui.view">
+            <field name="name">qz.config.form</field>
+            <field name="model">qz.config</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                    <form string="Print/Labels configuration">
+                        <field name="name"/>
+                        <field name="qz_printer"/>
+                        <field name="qz_default" />
+                        <field name="qz_label_height"/>
+                        <field name="qz_label_gap" />
+                        <field name="qz_label_width" />
+		                <field name="model_id" on_change="onchange_model(model_id)"/>
+                        <field name="model_list" invisible="1"/>
+                        <notebook colspan="4">
+                        <page string="Fields">
+                            <field name="qz_field_ids" colspan="4" nolabel="1">
+                                <form string="Fields">
+                                    <group colspan="4" col="6">
+                                        <field name="sequence" />
+                                        <field name="qz_field_id"  domain="[('ttype', 'not in', ['one2many', 'refenrence', 'function']), ('model_id', '=', parent.model_id)]"/>
+                                        <field name="qz_field_type"/>
+                                        <field name="h_start_p1" />
+                                        <field name="v_start_p2" />
+                                        <field name="rotation_p3" />
+                                        <field name="font_p4" />
+                                        <field name="h_multiplier_p5" attrs="{'invisible': [('qz_field_type', '=', 'barcode')]}"/>
+                                        <field name="v_multiplier_p6" attrs="{'invisible': [('qz_field_type', '=', 'barcode')]}"/>
+                                        <field name="n_r_p7" attrs="{'invisible': [('qz_field_type', '=', 'barcode')]}"/>
+                                        <field name="bar_sel_p4" attrs="{'invisible': [('qz_field_type', '=', 'text')]}"/>
+                                        <field name="n_bar_w_p5" attrs="{'invisible': [('qz_field_type', '=', 'text')]}"/>
+                                        <field name="w_bar_w_p6" attrs="{'invisible': [('qz_field_type', '=', 'text')]}"/>
+                                        <field name="bar_height_p7" attrs="{'invisible': [('qz_field_type', '=', 'text')]}"/>
+                                        <field name="human_read_p8" attrs="{'invisible': [('qz_field_type', '=', 'text')]}"/>
+                                    </group>
+                                </form>
+                                <tree string="Fields">
+                                    <field name="sequence" />
+                                    <field name="qz_field_id" domain="[('ttype', 'not in', ['one2many', 'refenrence', 'function']), ('model_id', '=', eval(parent.model_id))]"/>
+                                    <field name="qz_field_type"/>
+                                    <field name="bar_sel_p4" attrs="{'invisible': [('qz_field_type', '=', 'text')]}"/>
+                                    <field name="h_start_p1" />
+                                    <field name="v_start_p2" />
+                                    <field name="rotation_p3" />
+                                    <field name="font_p4" />
+                                    <field name="n_r_p7" attrs="{'invisible': [('qz_field_type', '=', 'barcode')]}"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Advance">
+                            <group colspan="2" col="2">
+                                <button name="create_action" string="Add sidebar button" type="object" icon="gtk-execute"
+                                        colspan="2" attrs="{'invisible':[('ref_ir_act_window','!=',False)]}"
+                                        help="Display a button in the sidebar of related documents to open a composition wizard"/>
+                                <field name="ref_ir_act_window" attrs="{'invisible':[('ref_ir_act_window','=',False)]}"/>
+                                <field name="ref_ir_value" attrs="{'invisible':[('ref_ir_act_window','=',False)]}"/>
+                                <button name="unlink_action" string="Remove sidebar button" type="object" icon="gtk-delete"
+                                         attrs="{'invisible':[('ref_ir_act_window','=',False)]}" colspan="2" />
+                            </group>
+                        </page>
+                        </notebook>
+
+                    </form>
+            </field>
+
+        </record>
+
+
+
+        <record id="qz_print_window_tree" model="ir.ui.view">
+            <field name="name">qz.config.tree</field>
+            <field name="model">qz.config</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                    <tree string="Print/Labels configuration">
+                        <field name="qz_printer" />
+		                <field name="qz_label_height" />
+                        <field name="qz_label_gap" />
+                        <field name="qz_label_width" />
+                    </tree>
+            </field>
+        </record>
+
+
+      <record model="ir.actions.act_window" id="action_qz">
+            <field name="name">Qz Print Config</field>
+	        <field name="res_model">qz.config</field>
+	        <field name="view_type">form</field>
+	        <field name="view_mode">tree,form</field>
+        </record>
+
+
+      <menuitem name= "Qz Print Config"
+                id = "qz_printing_main"
+                parent = "base_report_to_printer.menu_printing_main"
+                action = "action_qz"
+                groups = "base_report_to_printer.res_groups_printingprintoperator0"
+                sequence = "10"/>
+
+
+  </data>
+</openerp>
