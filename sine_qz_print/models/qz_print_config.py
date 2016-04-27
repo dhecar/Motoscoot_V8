@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from openerp import SUPERUSER_ID
 from openerp.osv import orm, fields
 from openerp.tools.translate import _
 
@@ -18,7 +17,8 @@ class QzConfig(orm.Model):
         'qz_label_gap': fields.integer('Label gap size in dots'),
         'qz_label_width': fields.integer('Label width in dots'),
         'qz_default': fields.boolean('Default?'),
-        'model_id': fields.many2one('ir.model', 'Model', required=True, select=1),
+        'model_id': fields.many2one('ir.model', 'Model', required=True, select=1,
+                                    domain=[('model', '=', 'product.template')]),
         'qz_field_ids': fields.one2many("qz.fields", 'report_id', 'Fields'),
         'model_list': fields.char('Model List', size=256),
         'ref_ir_act_window': fields.many2one('ir.actions.act_window', 'Sidebar action', readonly=True,
@@ -31,7 +31,7 @@ class QzConfig(orm.Model):
     def onchange_model(self, cr, uid, ids, model_id):
         model_list = ""
         if model_id:
-            model_obj = self.pool.get('ir.model')
+            model_obj = self.pool.get('ir.model').search(cr, uid, {('model', '=', 'product.template')})
             model_data = model_obj.browse(cr, uid, model_id)
             model_list = "[" + str(model_id) + ""
             active_model_obj = self.pool.get(model_data.model)

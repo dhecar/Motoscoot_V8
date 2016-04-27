@@ -94,6 +94,22 @@
         </record>
 
 
+      <!-- res.users epl printer-->
+    <record model="ir.ui.view" id="view_qz_printing_users_form">
+      <field name="name">res.users.qz.form.printing</field>
+      <field name="model">res.users</field>
+      <field name="inherit_id" ref="base.view_users_form" />
+      <field name="arch" type="xml">
+
+          <field name="printing_printer_id" position="after">
+                <field name="epl_printer_id" />
+            </field>
+
+
+      </field>
+    </record>
+
+
       <menuitem name= "Qz Print Config"
                 id = "qz_printing_main"
                 parent = "base_report_to_printer.menu_printing_main"

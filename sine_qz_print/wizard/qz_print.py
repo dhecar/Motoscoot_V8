@@ -3,7 +3,7 @@ from openerp.osv import fields, osv
 from zebra import zebra
 from time import sleep
 import unicodedata
-
+from openerp import models, exceptions, _
 
 class QzPrint(osv.Model):
     _name = 'qz.print'
@@ -18,40 +18,39 @@ class QzPrint(osv.Model):
         'copies': 1,
     }
 
-    # Get default queue name
-    def get_queue(self, cr, uid, field_names=None, arg=None, context=None):
+    # Get default label printer for current user
+    def get_default_label_printer(self, cr, uid, field_names=None, arg=None, context=None):
         result = {}
-        pool_obj = self.pool.get('qz.config')
-        pool_ids = pool_obj.search(cr, uid, [('qz_default', '=', 1)])
+        pool_obj = self.pool.get('res.users')
+        pool_ids = pool_obj.search(cr, uid, [('id', '=', uid)])
         if pool_ids:
             for i in pool_obj.browse(cr, uid, pool_ids, context=context):
-                result = i.qz_printer.system_name
+                result = i.epl_printer_id.system_name
             return result
+
+        else:
+
+            raise exceptions.Warning(
+                _('No printer configured for this User. Please contact Administrator')
+            )
 
     # Prepare EPL data (escaped)
 
     def prepare_epl_data(self, cr, uid, ids, context=None):
-
+        printer = self.get_default_label_printer(cr, uid, ids, context=context)
         pool_obj = self.pool.get('qz.config')
-        pool_ids = pool_obj.search(cr, uid, [('qz_default', '=', 1)])
+        pool_ids = pool_obj.search(cr, uid, [('qz_printer.system_name', '=', printer)])
         product_obj = self.pool.get('product.product')
         record_ids = context and context.get('active_ids', []) or []
         for product in product_obj.browse(cr, uid, record_ids, context=context):
-            ## Limit size:
-
-            if len(product.name_template) > 40:
-                product.name_template = product.name_template[:40] + '..'
-            else:
-                product.name_template = product.name_template
 
             if pool_ids:
                 for i in pool_obj.browse(cr, uid, pool_ids, context=context):
                     for fields in i.qz_field_ids:
 
-                        # Format: Bp1,p2,p3,p4,p5,p6,p7,p8,"DATA"\n
+                        # Barcode Format: Bp1,p2,p3,p4,p5,p6,p7,p8,"DATA"\n
 
                         if fields.qz_field_type == 'barcode':
-
                             data = []
                             data += {'B' + str(fields.h_start_p1) + ',' +
                                      str(fields.v_start_p2) + ',' +
@@ -61,12 +60,10 @@ class QzPrint(osv.Model):
                                      str(fields.w_bar_w_p6) + ',' +
                                      str(fields.bar_height_p7) + ',' +
                                      str(fields.human_read_p8) + ',' + '"' +
-                                     str(fields.qz_field_id) + '"' + '\n'}
+                                     str(fields.qz_field_id.name) + '"' + '\n'}
 
-                        # text field Format: Ap1,p2,p3,p4,p5,p6,p7,"DATA"\n
-
+                        # Text field Format: Ap1,p2,p3,p4,p5,p6,p7,"DATA"\n
                         else:
-
                             data2 = []
                             data2 += {'A' + str(fields.h_start_p1) + ',' +
                                       str(fields.v_start_p2) + ',' +
@@ -75,8 +72,8 @@ class QzPrint(osv.Model):
                                       str(fields.h_multiplier_p5) + ',' +
                                       str(fields.v_multiplier_p6) + ',' +
                                       str(fields.n_r_p7) + ',' + '"' +
-                                      unicodedata.normalize('NFKD', fields.qz_field_id).encode('ascii',
-                                                                                               'ignore') + '"' + '\n'}
+                                      unicodedata.normalize('NFKD', fields.qz_field_id.name).encode('ascii',
+                                                                                                    'ignore') + '"' + '\n'}
 
                 """
                     Example of ELP commands to send
@@ -96,10 +93,10 @@ class QzPrint(osv.Model):
 
     def send_epl_data(self, cr, uid, ids, context=None):
         z = zebra()
-        queue = self.get_queue(cr, uid, context=context)
-        z.setqueue(queue)
+        printer = self.get_default_label_printer(cr, uid, ids, context=context)
         conf_obj = self.pool.get('qz.config')
-        conf_id = conf_obj.search(cr, uid, [('qz_default', '=', 1)])
+        conf_id = conf_obj.search(cr, uid, [('qz_printer.system_name', '=', printer)])
+        z.setqueue(printer)
         if conf_id:
             for x in conf_obj.browse(cr, uid, conf_id):
                 thermal = x.qz_direct_thermal
@@ -107,7 +104,7 @@ class QzPrint(osv.Model):
                 gap = x.qz_label_gap
                 height = [h, gap]
                 width = x.qz_label_width
-        z.setup(direct_thermal=thermal, label_height=height, label_width=width)
+                z.setup(direct_thermal=thermal, label_height=height, label_width=width)
         epl = self.prepare_epl_data(cr, uid, ids, context=context)
         for data in self.browse(cr, uid, ids, context=context):
             num_cop = data.copies
