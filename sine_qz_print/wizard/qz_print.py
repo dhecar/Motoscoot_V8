@@ -51,15 +51,7 @@ class QzPrint(osv.Model):
             for i in pool_obj.browse(cr, uid, pool_ids, context=context):
                 # Model from I get info
                 model = i.model_id.model
-                num_fields = len(i.qz_field_ids)
-                counter = 0
                 for fields in i.qz_field_ids:
-
-                    if counter == num_fields:
-                        break
-                    else:
-                        counter += 1
-
                     # Fields name to search in model
                     name_field = fields.qz_field_id.name
                     # Get fields from Model
