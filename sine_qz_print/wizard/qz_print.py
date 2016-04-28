@@ -5,6 +5,7 @@ from time import sleep
 import unicodedata
 from openerp import models, exceptions, _
 
+
 class QzPrint(osv.Model):
     _name = 'qz.print'
     _description = 'Qz Print Labels'
@@ -37,45 +38,64 @@ class QzPrint(osv.Model):
     # Prepare EPL data (escaped)
 
     def prepare_epl_data(self, cr, uid, ids, context=None):
+        # Get default printer for current user
         printer = self.get_default_label_printer(cr, uid, ids, context=context)
+        # Default configuration for selected printer
         pool_obj = self.pool.get('qz.config')
         pool_ids = pool_obj.search(cr, uid, [('qz_printer.system_name', '=', printer)])
-        product_obj = self.pool.get('product.product')
+        # Active IDS
         record_ids = context and context.get('active_ids', []) or []
-        for product in product_obj.browse(cr, uid, record_ids, context=context):
+        # Get model to print from qz.config and field_id also:
 
-            if pool_ids:
-                for i in pool_obj.browse(cr, uid, pool_ids, context=context):
-                    for fields in i.qz_field_ids:
+        if pool_ids:
+            for i in pool_obj.browse(cr, uid, pool_ids, context=context):
+                # Model from I get info
+                model = i.model_id.model
+                num_fields = len(i.qz_field_ids)
+                counter = 0
+                for fields in i.qz_field_ids:
 
-                        # Barcode Format: Bp1,p2,p3,p4,p5,p6,p7,p8,"DATA"\n
+                    if counter == num_fields:
+                        break
+                    else:
+                        counter += 1
 
-                        if fields.qz_field_type == 'barcode':
-                            data = []
-                            data += {'B' + str(fields.h_start_p1) + ',' +
-                                     str(fields.v_start_p2) + ',' +
-                                     str(fields.rotation_p3) + ',' +
-                                     str(fields.bar_sel_p4) + ',' +
-                                     str(fields.n_bar_w_p5) + ',' +
-                                     str(fields.w_bar_w_p6) + ',' +
-                                     str(fields.bar_height_p7) + ',' +
-                                     str(fields.human_read_p8) + ',' + '"' +
-                                     str(fields.qz_field_id.name) + '"' + '\n'}
+                    # Fields name to search in model
+                    name_field = fields.qz_field_id.name
+                    # Get fields from Model
+                    printing_field = self.pool.get(model).read(cr, uid, record_ids, [name_field], context=context)
+                    for x in printing_field:
+                        print_field = x[name_field]
+                    # Barcode Format: Bp1,p2,p3,p4,p5,p6,p7,p8,"DATA"\n
 
-                        # Text field Format: Ap1,p2,p3,p4,p5,p6,p7,"DATA"\n
-                        else:
-                            data2 = []
-                            data2 += {'A' + str(fields.h_start_p1) + ',' +
-                                      str(fields.v_start_p2) + ',' +
-                                      str(fields.rotation_p3) + ',' +
-                                      str(fields.font_p4) + ',' +
-                                      str(fields.h_multiplier_p5) + ',' +
-                                      str(fields.v_multiplier_p6) + ',' +
-                                      str(fields.n_r_p7) + ',' + '"' +
-                                      unicodedata.normalize('NFKD', fields.qz_field_id.name).encode('ascii',
-                                                                                                    'ignore') + '"' + '\n'}
+                    if fields.qz_field_type == 'barcode':
+                        data = []
+                        data += {'B' + str(fields.h_start_p1) + ',' +
+                                 str(fields.v_start_p2) + ',' +
+                                 str(fields.rotation_p3) + ',' +
+                                 str(fields.bar_sel_p4) + ',' +
+                                 str(fields.n_bar_w_p5) + ',' +
+                                 str(fields.w_bar_w_p6) + ',' +
+                                 str(fields.bar_height_p7) + ',' +
+                                 str(fields.human_read_p8) + ',' + '"' +
+                                 str(print_field) + '"' + '\n'}
 
-                """
+
+                    # Text field Format: Ap1,p2,p3,p4,p5,p6,p7,"DATA"\n
+                    else:
+
+                        data = []
+                        data += {'A' + str(fields.h_start_p1) + ',' +
+                                 str(fields.v_start_p2) + ',' +
+                                 str(fields.rotation_p3) + ',' +
+                                 str(fields.font_p4) + ',' +
+                                 str(fields.h_multiplier_p5) + ',' +
+                                 str(fields.v_multiplier_p6) + ',' +
+                                 str(fields.n_r_p7) + ',' + '"' +
+                                 unicodedata.normalize('NFKD', print_field).encode('ascii',
+                                                                                   'ignore') + '"' + '\n'}
+
+                    """
                     Example of ELP commands to send
                     N
                     A40,80,0,4,1,1,N,"Tangerine Duck 4.4%"
@@ -83,11 +103,16 @@ class QzPrint(osv.Model):
                     A40,240,0,3,1,1,N,"Gyle: 127     Best Before: 16/09/2011"
                     A40,320,0,4,1,1,N,"Pump & Truncheon"
                     P1
-                 """
+                    """
+                    # Partial result that create one line for each field to print
+                    partial_result = '\n'.join(data)
 
-                result = '"""\n' + 'N\n' + ''.join(data) + ''.join(data2) + 'P1\n"""'
+                result = '"""\n' + 'N\n'
+                result += partial_result
 
-                return result
+                result += 'P1\n"""'
+
+            return result
 
     # Print EPL data
 
