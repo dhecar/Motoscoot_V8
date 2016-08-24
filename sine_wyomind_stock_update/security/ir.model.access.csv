@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+wyomind_config_admin,wyomind_conf.admin,model_wyomind_config,group_wyomind_config_admin,1,1,1,1
+wyomind_config_user,wyomind_conf.user,model_wyomind_config,group_wyomind_config_user,1,0,0,0

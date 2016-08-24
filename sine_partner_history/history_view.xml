@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="view_order_history_doc">
+            <field name="name">sale.order.history.doc</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//page[@string='Order Lines']" position="after">
+                    <page string="Historical" >
+                    <field name="partner_history_ids"/>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+    </data>
+
+
+    <data>
+    <record id="partner_view_order_tree" model="ir.ui.view">
+            <field name="name">partner.sale.order.tree</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_tree" />
+            <field name="arch" type="xml">
+                <xpath expr="//tree[@string='Sales Orders']" position="replace">
+                    <tree string="Sales Orders"  colors="grey:state=='cancel';blue:state in ('waiting_date','manual');red:state in ('invoice_except','shipping_except')">
+                        <field name="name"/>
+                        <field name="date_order"/>
+                        <field name="state"/>
+                        <field name="partner_id"/>
+                        <field name="payment_typ"/>
+                        <field name="user_id"/>
+                        <field name="amount_total" sum="Total Tax Included"/>
+                        <field name="picking_status"/>
+                        <field name="date_send"/>
+                        <field name="traking"/>
+                        <field name="invoice_status"/>
+                    </tree>
+                </xpath>
+            </field>
+        </record>
+</data>
+
+    <data>
+        <record model="ir.ui.view" id="res_partner_history_doc">
+            <field name="name">res.partner.history.doc</field>
+            <field name="model">res.partner</field>
+            <field eval="1" name="priority"/>
+            <field name="inherit_id" ref="base.view_partner_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//page[@string='Contacts']" position="after">
+                   <page string="Historical Movements" >
+                       <field name="sale_history"/>
+                   </page>
+            </xpath>
+           </field>
+        </record>
+
+
+
+
+
+    </data>
+
+
+
+</openerp>

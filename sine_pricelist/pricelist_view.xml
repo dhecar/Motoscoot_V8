@@ -1,0 +1,63 @@
+<?xml version="1.0" ?>
+<openerp>
+    <data>
+	<record id="inherit_product_pricelist_item_form_view" model="ir.ui.view">
+            <field name="name">inherit.product.pricelist.item.form</field>
+            <field name="model">product.pricelist.item</field>
+	    <field name="inherit_id" ref="product.product_pricelist_item_form_view" />
+		<field name="type">form</field>
+		<field name="arch" type="xml">
+			<field name="product_id" position="after">
+				<separator colspan="4"/>
+                        	<field name="brand_id" />
+            </field>
+
+        </field>
+    </record>
+
+
+    <record id="inherit_product_pricelist_item_tree_view" model="ir.ui.view">
+            <field name="name">inherit.product.pricelist.item.tree</field>
+            <field name="model">product.pricelist.item</field>
+	        <field name="inherit_id" ref="product.product_pricelist_item_tree_view" />
+		    <field name="arch" type="xml">
+			    <field name="product_id" position="after">
+				    <field name="brand_id" />
+                </field>
+
+            </field>
+    </record>
+
+
+    <record id="inherit_product_pricelist_form_view" model="ir.ui.view">
+            <field name="name">inherit.product.pricelist.form</field>
+            <field name="model">product.pricelist</field>
+	    <field name="inherit_id" ref="product.product_pricelist_view" />
+		<field name="type">form</field>
+		<field name="arch" type="xml">
+			<field name="company_id" position="after">
+				<field name="user_link_ids" widget="many2many_tags" />
+            </field>
+        </field>
+    </record>
+
+
+
+
+        <record model="ir.ui.view" id="inherit_res_users_pricelist_view">
+            <field name="name">inherit.res.users.pricelist.view</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_form" />
+            <field name="arch" type="xml">
+
+                <field name="name" position="after">
+                    <field name="pricelist_ids" />
+                </field>
+
+            </field>
+        </record>
+
+
+    </data>
+</openerp>
+

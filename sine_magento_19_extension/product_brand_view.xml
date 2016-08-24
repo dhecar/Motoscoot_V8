@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_product_brand_inh_form" model="ir.ui.view">
+            <field name="name">product.brand.inh.form.magento</field>
+            <field name="model">product.brand</field>
+            <field name="inherit_id" ref="product_brand.view_product_brand_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@string='Description']" position="after">
+                    <newline/>
+                    <group name="magento" string="Magento Bindings">
+                        <field name="magento_bind_ids" nolabel="1">
+                            <tree>
+                                <field name="backend_id"/>
+                            </tree>
+                        </field>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</openerp>

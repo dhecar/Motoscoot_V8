@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Security groups. Barcelona/Girona has diferent access rigths, and inside each location, also-->
+<openerp>
+<data noupdate="0">
+
+<!-- Barcelona -->
+    <record id="group_barcelona_level0" model="res.groups">
+        <field name="name">Barcelona Level0</field>
+    </record>
+
+    <!-- Barcelona -->
+    <record id="group_barcelona_level00" model="res.groups">
+        <field name="name">Barcelona Level00</field>
+    </record>
+
+
+<!-- Girona -->
+
+
+    <record id="group_girona_level0" model="res.groups">
+        <field name="name">Girona Level0</field>
+    </record>
+
+
+
+</data>
+</openerp>

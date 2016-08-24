@@ -9,12 +9,45 @@
             <field name="inherit_id" ref="sale.view_order_form" />
             <field name="arch" type="xml">
 
+                <!--<xpath expr="//field[@name='order_line']/tree/field[@name='product_id']" position="replace">
+                    <field name="product_id"
+                           context="{'partner_id':parent.partner_id, 'quantity':product_uom_qty, 'pricelist':parent.pricelist_id, 'shop':parent.shop_id, 'uom':product_uom}"
+                           groups="base.group_user"
+                           on_change="product_id_change(parent.pricelist_id, product_id, product_uom_qty, False, product_uos_qty, False, name, parent.partner_id, False, True, parent.date_order, False, parent.fiscal_position, False, context)"/>
+
+                </xpath>-->
+
                 <xpath expr="//field[@name='order_line']/tree/field[@name='product_id']" position="before">
+                    <field name="sum_stock" />
                     <field name="incoming" />
                     <field name="outgoing" />
+
 		        </xpath>
 
-                <field name="pricelist_id" position="attributes">
+                <xpath expr="//field[@name='order_line']/tree/field[@name='sum_stock']" position="attributes">
+                        <attribute name="style">width: 50%%;</attribute>
+                </xpath>
+
+
+
+                <xpath expr="//field[@name='order_line']/tree/field[@name='price_subtotal']" position="before">
+                    <field name="margin_ok"/>
+                </xpath>
+
+
+                <xpath expr="//tree[@string='Sales Order Lines']" position="attributes">
+                    <attribute name="colors">red:margin_ok &lt;=0</attribute>
+                </xpath>
+
+
+
+
+                <field name="discount" position="before">
+                    <field name="sum_stock"/>
+                </field>
+
+
+                 <field name="pricelist_id" position="attributes">
                     <attribute name="context">{'pricelist_user_only':True}</attribute>
                  </field>
 
@@ -22,23 +55,15 @@
 
    </record>
 
-     <record model="ir.ui.view" id="view_order_inherit_form">
-	        <field name="name">sale.order.inherit.form</field>
+     <record model="ir.ui.view" id="sale_internal_comment_form_view">
+	        <field name="name">sale.internal.comment.model</field>
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale.view_order_form" />
                 <field name="type">form</field>
                 <field name="arch" type="xml">
-                    <field name="note" position="before">
-		                <field name="sale_internal_comment" class="oe_inline" placeholder="Internal Comment..."/>
-                    </field>
-
-                    <field name="date_order" position="before">
-                        <field name="alert" readonly="1" />
-                        <field name="picking_status" readonly="1" />
-                        <field name="date_send" readonly="1"/>
-                        <field name="traking" readonly="1" />
-                        <field name="invoice_status" readonly="1" />
-                    </field>
+                <field name="note" position="before">
+		            <field name="sale_internal_comment" class="oe_inline" placeholder="Internal Comment..."/>
+                </field>
 
         	</field>
         </record>
@@ -60,6 +85,24 @@
 
             </field>
         </record>
+
+     <record id="view_order_inherit_form" model="ir.ui.view">
+            <field name="name">sale.order.inherit.form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+
+                    <field name="date_order" position="before">
+                        <field name="alert" readonly="1" />
+                        <field name="picking_status" readonly="1" />
+                        <field name="date_send" readonly="1"/>
+                        <field name="traking" readonly="1" />
+                        <field name="invoice_status" readonly="1" />
+                    </field>
+
+            </field>
+     </record>
+
 
  </data>
 </openerp>

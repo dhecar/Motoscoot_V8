@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data noupdate="0">
+<record id="group_wyomind_config_admin" model="res.groups">
+    <field name="name">Wyomind Admin</field>
+</record>
+
+<record id="group_wyomind_config_user" model="res.groups">
+    <field name="name">Wyomind User</field>
+</record>
+</data>
+</openerp>

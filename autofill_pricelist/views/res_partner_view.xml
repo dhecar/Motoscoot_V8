@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_partner_category_inherit_form" model="ir.ui.view">
+            <field name="name">res.partner.category.inherit.view</field>
+            <field name="model">res.partner.category</field>
+            <field name="inherit_id" ref="base.view_partner_category_form" />
+            <field name="arch" type="xml">
+                <field name="parent_id" position="after" >
+                    <field name="pricelist" />
+                </field>
+           </field>
+        </record>
+
+        <record id="view__partner_inherit_form" model="ir.ui.view">
+            <field name="name">base.partner.inherit.view</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form" />
+            <field name="arch" type="xml">
+                <field name="category_id" position="replace" >
+                    <field name="category_id" on_change="onchange_category(category_id)" widget="many2many_tags" placeholder="Tags..."/>
+                </field>
+           </field>
+
+        </record>
+
+
+    </data>
+</openerp>

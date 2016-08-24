@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+ <data>
+<!--Wyomind Advanced Inventory Form View-->
+    <record model="ir.ui.view" id="wyomind_config_form_view">
+	<field name="name">wyomind_config.form</field>
+	<field name="model">wyomind.config</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+        <form string="Configuration">
+            <field name="url" groups="sine_wyomind_stock_update.group_wyomind_config_admin"/>
+		    <field name="apiuser" groups="sine_wyomind_stock_update.group_wyomind_config_admin"/>
+            <field name="apipass" groups="sine_wyomind_stock_update.group_wyomind_config_admin" password="True"/>
+        </form>
+	    </field>
+    </record>
+
+    <record id="action_wyomind_config_settings" model="ir.actions.act_window">
+            <field name="name">Configure Wyomind Conection</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">wyomind.config</field>
+            <field name="view_mode">tree,form</field>
+    </record>
+
+
+     <record id="view_sync_stock_form" model="ir.ui.view">
+            <field name="name">sync.stock.form</field>
+            <field name="model">wyomind.sync</field>
+            <field name="arch" type="xml">
+                <form string="Sync Stock" version="7.0">
+
+                    <group string="Additional Parameters" colspan="4">
+
+                    </group>
+
+                    <footer>
+                        <button string="Sync" name="wyomind_sync" type="object" icon="gtk-ok"/>
+                        o
+                        <button string="Cancel" special="cancel" class="oe_link" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+
+
+
+    <record id="action_wyomind_stock_sync" model="ir.actions.act_window">
+            <field name="name">Wyomind Stock Sync</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">wyomind.sync</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+    </record>
+
+
+
+    <menuitem name="Wyomind Config" id="wyomind_conf" parent="base.menu_config"  sequence="4"/>
+    <menuitem name="Wyomind configuration" id="wyomind_conf_2" parent="wyomind_conf"  sequence="3"  action="action_wyomind_config_settings" />
+<menuitem name="Wyomind Stock Sync" id="wyomind_stock_sync" parent="wyomind_conf"  sequence="3"  action="action_wyomind_stock_sync" />
+     </data>
+</openerp>

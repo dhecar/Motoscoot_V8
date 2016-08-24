@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="view_picking_out_form" model="ir.ui.view">
+            <field name="name">stock.picking.out.form</field>
+            <field name="model">set.printed</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Print" version="7.0">
+                <button name="get_set" string="Print"  type="object"  class="oe_highlight"/>
+                <button string="Cancel" class="oe_link" special="cancel" />
+                </form>
+            </field>
+        </record>
+
+        <act_window id="print_packing" name="Print Selected Packings"
+                src_model="stock.picking.out"
+                res_model="set.printed"
+                view_mode="form"
+                view_type="form"
+                view_id="view_picking_out_form"
+                target="new"
+                key2="client_action_multi"
+                context="{'active_ids': context.get('active_ids', [])}"/>
+
+
+    </data>
+
+    <data noupdate="0">
+        <record id="view_picking_int_form" model="ir.ui.view">
+            <field name="name">stock.picking.int.form</field>
+            <field name="model">stock.picking.in</field>
+            <field name="inherit_id" ref="delivery.view_delivery_order_inherit_stock"/>
+            <field name="arch" type="xml">
+                <xpath expr="/form/header//button[@string='Print Delivery Order' and @states='confirmed,assigned']" position="attributes">
+                    <attribute name="name">%(stock.report_picking_list_in)d</attribute>
+                </xpath>
+                <xpath expr="/form/header//button[@string='Print Delivery Order' and @states='done']" position="attributes">
+                    <attribute name="name">%(stock.report_picking_list_in)d</attribute>
+                </xpath>
+            </field>
+        </record>
+    </data>
+
+</openerp>

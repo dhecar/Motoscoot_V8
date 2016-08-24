@@ -40,7 +40,7 @@ Definition of the delivery carrier file for "Nacex".
     'website': 'http://www.sinergianinformatica.net',
     'depends': ['base_delivery_carrier_files', 'sine_delivery_extension'],
     'init_xml': [],
-    'data': ['carrier_file_view.xml'],
+    'update_xml': ['carrier_file_view.xml'],
     'demo_xml': [],
     'test': [],
     'images': [],

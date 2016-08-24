@@ -1,0 +1,202 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+#	* product_pricelist_improved
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 7.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-08-27 14:07+0000\n"
+"PO-Revision-Date: 2015-08-27 14:07+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: product_pricelist_improved
+#: field:calculate.pricelist.line,base:0
+#: model:ir.model.fields,field_description:product_pricelist_improved.field_calculate_pricelist_line_base
+msgid "Base Price"
+msgstr ""
+
+#. module: product_pricelist_improved
+#: view:calculate.pricelist:0
+msgid "Calculate"
+msgstr ""
+
+#. module: product_pricelist_improved
+#: code:_description:0
+#: model:ir.actions.act_window,name:product_pricelist_improved.act_calculate_pricelist
+#: model:ir.actions.act_window,name:product_pricelist_improved.open_calculate_pricelist_wizard
+#: model:ir.model,name:product_pricelist_improved.model_calculate_pricelist
+#: model:ir.ui.menu,name:product_pricelist_improved.menu_open_calculate_pricelist_wizard
+#, python-format
+msgid "Calculate Pricelist"
+msgstr ""
+
+#. module: product_pricelist_improved
+#: view:calculate.pricelist:0
+msgid "Calculate Pricelist for Products"
+msgstr ""
+
+#. module: product_pricelist_improved
+#: view:calculate.pricelist:0
+msgid "Cancel"
+msgstr ""
+
+#. module: product_pricelist_improved
+#: model:ir.model,name:product_pricelist_improved.model_check_pricelist
+msgid "Check Pricelist"
+msgstr ""
+
+#. module: product_pricelist_improved
+#: field:calculate.pricelist.line,percent:0
+#: model:ir.model.fields,field_description:product_pricelist_improved.field_calculate_pricelist_line_percent
+msgid "Discount"
+msgstr ""
+
+#. module: product_pricelist_improved
+#: selection:calculate.pricelist,state:0
+msgid "Done"
+msgstr ""
+
+#. module: product_pricelist_improved
+#: field:calculate.pricelist.line,price:0
+#: model:ir.model.fields,field_description:product_pricelist_improved.field_calculate_pricelist_line_price
+msgid "Final Price"
+msgstr ""
+
+#. module: product_pricelist_improved
+#: selection:calculate.pricelist,state:0
+msgid "Initial"
+msgstr ""
+
+#. module: product_pricelist_improved
+#: field:calculate.pricelist.line,margin:0
+#: model:ir.model.fields,field_description:product_pricelist_improved.field_calculate_pricelist_line_margin
+msgid "Margin"
+msgstr ""
+
+#. module: product_pricelist_improved
+#: view:product.category:0
+#: view:product.product:0
+msgid "Margin profit"
+msgstr ""
+
+#. module: product_pricelist_improved
+#: help:product.category,margin_pricelist:0
+msgid "Minimum profit margin on the price of products in this category"
+msgstr ""
+
+#. module: product_pricelist_improved
+#: help:product.product,margin_pricelist:0
+msgid "Minimum profit margin on the price of products in this product"
+msgstr ""
+
+#. module: product_pricelist_improved
+#: field:calculate.pricelist.line,total:0
+#: model:ir.model.fields,field_description:product_pricelist_improved.field_calculate_pricelist_line_total
+msgid "Price with Tax"
+msgstr ""
+
+#. module: product_pricelist_improved
+#: view:calculate.pricelist:0
+#: field:calculate.pricelist.line,pricelist_id:0
+#: model:ir.model.fields,field_description:product_pricelist_improved.field_calculate_pricelist_line_pricelist_id
+msgid "Pricelist"
+msgstr ""
+
+#. module: product_pricelist_improved
+#: view:calculate.pricelist:0
+msgid "Pricelist data"
+msgstr ""
+
+#. module: product_pricelist_improved
+#: field:calculate.pricelist,pricelist_ids:0
+#: model:ir.model.fields,field_description:product_pricelist_improved.field_calculate_pricelist_pricelist_ids
+msgid "Pricelist line"
+msgstr ""
+
+#. module: product_pricelist_improved
+#: model:ir.model.fields,field_description:product_pricelist_improved.field_product_category_margin_pricelist
+#: model:ir.model.fields,field_description:product_pricelist_improved.field_product_product_margin_pricelist
+#: field:product.category,margin_pricelist:0
+#: field:product.product,margin_pricelist:0
+msgid "Pricelist margin (%)"
+msgstr ""
+
+#. module: product_pricelist_improved
+#: code:_description:0
+#: field:calculate.pricelist,product_id:0
+#: field:calculate.pricelist.line,default_code:0
+#: field:calculate.pricelist.line,product_id:0
+#: model:ir.model,name:product_pricelist_improved.model_product_product
+#: model:ir.model.fields,field_description:product_pricelist_improved.field_calculate_pricelist_line_default_code
+#: model:ir.model.fields,field_description:product_pricelist_improved.field_calculate_pricelist_line_product_id
+#: model:ir.model.fields,field_description:product_pricelist_improved.field_calculate_pricelist_product_id
+#, python-format
+msgid "Product"
+msgstr ""
+
+#. module: product_pricelist_improved
+#: code:_description:0
+#: model:ir.model,name:product_pricelist_improved.model_product_category
+#, python-format
+msgid "Product Category"
+msgstr ""
+
+#. module: product_pricelist_improved
+#: field:calculate.pricelist,qty:0
+#: field:calculate.pricelist.line,qty:0
+#: model:ir.model.fields,field_description:product_pricelist_improved.field_calculate_pricelist_line_qty
+#: model:ir.model.fields,field_description:product_pricelist_improved.field_calculate_pricelist_qty
+msgid "Quantity"
+msgstr ""
+
+#. module: product_pricelist_improved
+#: view:calculate.pricelist:0
+msgid "Recalculate"
+msgstr ""
+
+#. module: product_pricelist_improved
+#: view:calculate.pricelist:0
+msgid "Select a product"
+msgstr ""
+
+#. module: product_pricelist_improved
+#: field:calculate.pricelist.line,standard_price:0
+#: model:ir.model.fields,field_description:product_pricelist_improved.field_calculate_pricelist_line_standard_price
+msgid "Standard Price"
+msgstr ""
+
+#. module: product_pricelist_improved
+#: field:calculate.pricelist,state:0
+#: model:ir.model.fields,field_description:product_pricelist_improved.field_calculate_pricelist_state
+msgid "State"
+msgstr ""
+
+#. module: product_pricelist_improved
+#: view:calculate.pricelist:0
+msgid "This wizard allows to calculate the diferent pricelist for a product"
+msgstr ""
+
+#. module: product_pricelist_improved
+#: field:calculate.pricelist.line,wizard_id:0
+#: model:ir.model.fields,field_description:product_pricelist_improved.field_calculate_pricelist_line_wizard_id
+msgid "Wizard"
+msgstr ""
+
+#. module: product_pricelist_improved
+#: code:_description:0
+#: model:ir.model,name:product_pricelist_improved.model_calculate_pricelist_line
+#, python-format
+msgid "calculate.pricelist.line"
+msgstr ""
+
+#. module: product_pricelist_improved
+#: model:ir.model,name:product_pricelist_improved.model_check_pricelist_line
+msgid "check.pricelist.line"
+msgstr ""
+

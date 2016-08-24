@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="stock_move_new_tree">
+            <field name="name">stock.move.tree.inherit</field>
+            <field name="model">stock.move</field>
+            <field name="inherit_id" ref="stock.view_move_tree" />
+            <field name="arch" type="xml">
+                <xpath expr="//tree[@string='Moves']" position="attributes">
+   <attribute name="colors">#2cd6d4:type == 'out' and state not in 'confirmed done';#2c9ccc:type == 'out' and state =='confirmed';
+       #c5b0d4:type =='out' and state == 'done';green:type == 'in';#ffcc1e:type == 'internal'</attribute>
+    <attribute name="fonts">bold:state=='confirmed'</attribute>
+                </xpath>
+
+            </field>
+        </record>
+    </data>
+</openerp>

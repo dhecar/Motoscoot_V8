@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+ <data>
+
+
+   <record model="ir.ui.view" id="purchase_order_inherited_stock">
+            <field name="name">purchase.order.stock</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form" />
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='order_line']/tree/field[@name='product_id']" position="before">
+                    <!--<field name="stock_grn" />
+				    <field name="stock_bcn" />
+				    <field name="stock_pt" />-->
+                    <field name="sum_stock"/>
+                    <field name="incoming" />
+                    <field name="outgoing" />
+		        </xpath>
+
+
+            </field>
+
+   </record>
+
+
+ </data>
+</openerp>

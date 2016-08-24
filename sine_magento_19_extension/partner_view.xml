@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+
+<record id="view_magento_address_form_inh" model="ir.ui.view">
+            <field name="name">magento.address.form.inh</field>
+            <field name="model">magento.address</field>
+            <field name="inherit_id" ref="magentoerpconnect.view_magento_address_form"/>
+            <field name="arch" type="xml">
+                <field name="magento_partner_id" position="after">
+                    <field name="group_id"/>
+                    <field name="pricelist"/>
+                </field>
+
+            </field>
+        </record>
+</data>
+</openerp>

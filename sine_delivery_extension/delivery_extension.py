@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+
+
 import time
 from openerp.osv import fields, osv
 from openerp.tools.translate import _
@@ -17,6 +19,12 @@ class delivery_carrier(osv.osv):
 
 class sale_order(osv.osv):
     _inherit = 'sale.order'
+    # _columns = {
+    #        'carrier_id':fields.many2one("delivery.carrier", "Delivery Method", help="Complete this field if you plan to invoice the shipping based on picking."),
+    #    }
+    _columns = {
+    }
+
 
     def delivery_set(self, cr, uid, ids, context=None):
         order_obj = self.pool.get('sale.order')
@@ -43,6 +51,7 @@ class sale_order(osv.osv):
             line_obj.create(cr, uid, {
                 'order_id': order.id,
                 'name': grid.carrier_id.product_id.name,
+                #                'name': grid.carrier_id.name,
                 'product_uom_qty': 1,
                 'product_uom': grid.carrier_id.product_id.uom_id.id,
                 'product_id': grid.carrier_id.product_id.id,

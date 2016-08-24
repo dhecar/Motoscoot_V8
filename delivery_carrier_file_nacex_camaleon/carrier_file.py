@@ -21,8 +21,8 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from openerp.osv import fields, osv
-#from osv import osv, fields
+
+from osv import osv, fields
 import openerp.addons.decimal_precision as dp
 
 
@@ -48,7 +48,7 @@ class carrier_file(osv.osv):
             ('E', 'Email'),
             ('S', 'SMS'))
 
-    def _get_tipo_paq(self, cursor, user_id, context=None):
+    def _get_tipo_paq(self, cursor, user_id, context):
         return (
             ('1', 'Bolsa'),
             ('2', 'Paquete'))
@@ -81,7 +81,7 @@ class carrier_file(osv.osv):
 
     }
 
-    #_defaults = {
-    #    'nacex_paquete': lambda *a: 2,
-    #    }
+    _defaults = {
+        'nacex_paquete': lambda *a: 2,
+        }
 carrier_file()

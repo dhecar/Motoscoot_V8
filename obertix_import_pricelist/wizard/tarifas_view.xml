@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        
+        <record id="view_punt_tarifas_importer_form" model="ir.ui.view">
+            <field name="name">tarifas.importer.form</field>
+            <field name="model">tarifas.importer</field>
+            <field name="arch" type="xml">
+                <form string="Importador de tarifas" version="7.0">
+                    <group colspan="4">
+                        <label string="Este asistente importa las tarifas de proveedores a la base de datos. El formato del fichero debe de ser un csv con los siguientes campos en el orden indicado: " colspan="4"/>
+                    </group>
+                    <group colspan="4">
+                        <label string='"REFERENCIA","DESCRIPCION","PRECIO", "COSTE", "PVP", "EAN" (Opcional).'/>
+                    </group>
+                    <group colspan="4">
+                        <label string='El separador de campo es el punto y coma.'/>
+                    </group>
+                    <newline/>
+                    <group string="Parámetros adicionales" colspan="4">
+                        <label string="Selecciona los parámetros:" colspan="1"/>
+                        <newline/>
+                        <group>
+                            <field name="cost_price"/>
+                            <newline/>
+                            <field name="supplier_price"/>
+                            <newline/>
+                            <field name="create"/>
+                            <group attrs="{'invisible':[('create','=',False)]}">
+                                <field name="confirm_create"/>
+                            </group>
+                            <newline/>
+                            <field name="write_name"/>
+                            <newline/>
+                            <field name="ean13"/>
+                        </group>
+                    </group>
+                    <group string="Fichero" colspan="4">
+                        <label string="Selecciona una tarifa en formato CSV:"/>
+                        <group colspan="4">
+                            <field name="input_file_name" string="File" nolabel="1"/>
+                            <field name="input_file" filename="input_file_name" nolabel="1"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button string="Importar" name="action_import" type="object" icon="gtk-ok"/>
+                        o
+                        <button string="Cancelar" special="cancel" class="oe_link" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_punt_tarifas_importer" model="ir.actions.act_window">
+            <field name="name">Importar Tarifas Venta</field>
+            <field name="res_model">tarifas.importer</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="menu_tarifa_importer"
+            name="Importador Tarifas Ventas"
+            parent="base.menu_base_partner"  
+            sequence="20"
+            groups="base.group_sale_manager"/> 
+        <menuitem id="menu_action_tarifa_importer"
+            parent="menu_tarifa_importer"
+            name = "Importar Tarifas"
+            action="action_punt_tarifas_importer"
+            sequence="10"/>
+        
+    </data>
+</openerp>

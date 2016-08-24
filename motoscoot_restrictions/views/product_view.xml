@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <!-- Disable update stock -->
+        <record model="ir.ui.view" id="product_stock_restrict_view">
+            <field name="name">product.stock.restrict.view</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="stock.view_normal_procurement_locations_form" />
+            <field name="groups_id" eval="[(6, 0, [ref('ms_groups.group_barcelona_level0') ])]" />
+            <field name="arch" type="xml">
+
+                <xpath expr='//button[@string="update"]' position='attributes'>
+                  <attribute name="invisible">True</attribute>
+                </xpath>
+
+            </field>
+        </record>
+
+        <!--Disable edit/create product -->
+        <record model="ir.ui.view" id="product_restrict_view">
+            <field name="name">product.product.restrict.view</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view" />
+            <field name="groups_id" eval="[(6, 0, [ref('ms_groups.group_barcelona_level0') ])]" />
+            <field name="arch" type="xml">
+
+                <xpath expr="//form[@string='Product']" position="inside">
+                    <form  create="False" edit="False" />
+                </xpath>
+
+
+            </field>
+        </record>
+
+    </data>
+</openerp>
