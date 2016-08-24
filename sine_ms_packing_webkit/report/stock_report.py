@@ -20,8 +20,8 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ###############################################################################
-from osv import fields, osv
-from report import report_sxw
+from openerp.osv import fields, osv
+from openerp.report import report_sxw
 import time
 import base64
 from barcode.writer import ImageWriter

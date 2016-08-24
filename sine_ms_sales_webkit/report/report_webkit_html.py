@@ -1,6 +1,6 @@
 import time
-from report import report_sxw
-from osv import osv
+from openerp.report import report_sxw
+
 
 
 class report_webkit_html(report_sxw.rml_parse):
