@@ -19,7 +19,7 @@
 #
 ##############################################################################
 
-from osv import fields, osv
+from openerp.osv import fields, osv
 import openerp.addons.decimal_precision as dp
 from openerp import SUPERUSER_ID
 import psycopg2

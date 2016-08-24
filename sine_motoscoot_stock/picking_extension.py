@@ -1,4 +1,4 @@
-from osv import fields, osv
+from openerp.osv import fields, osv
 import one2many_sorted
 from zebra import zebra
 from time import sleep

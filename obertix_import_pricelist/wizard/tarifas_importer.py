@@ -25,7 +25,7 @@
 import csv
 import base64
 import StringIO
-from osv import fields, osv
+from openerp.osv import fields, osv
 import math
 
 import logging
