@@ -48,7 +48,7 @@ class carrier_file(osv.osv):
             ('E', 'Email'),
             ('S', 'SMS'))
 
-    def _get_tipo_paq(self, cursor, user_id, context):
+    def _get_tipo_paq(self, cursor, user_id, context=None):
         return (
             ('1', 'Bolsa'),
             ('2', 'Paquete'))
