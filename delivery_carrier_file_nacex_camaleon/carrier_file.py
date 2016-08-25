@@ -82,6 +82,6 @@ class carrier_file(osv.osv):
     }
 
     _defaults = {
-        'nacex_paquete': lambda *a: 2,
+        'nacex_paquete': lambda *a: '2',
         }
 carrier_file()
