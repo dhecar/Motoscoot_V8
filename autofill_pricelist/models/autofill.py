@@ -39,7 +39,7 @@ class res_partner(osv.osv):
 
     def onchange_category(self, cr, uid, id, category_id, context=None):
         if category_id:
-            parent_id = self.pool.get('res.partner').browse(cr, uid, id[0][2], context)
+            parent_id = self.pool.get('res.partner').browse(cr, uid, id[0], context)
             pricelist_id = self.pool.get('res.partner.category').browse(cr, uid, category_id[0][2], context)
             if not parent_id:
                 if pricelist_id:
