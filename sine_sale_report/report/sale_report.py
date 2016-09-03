@@ -32,6 +32,6 @@ class SaleReport(models.Model):
             ('done', 'Done'),
             ('cancel', 'Cancelled'),
             ('invoiced', 'Invoiced'),
-        ], 'Order Status', readonly=True),
+        ], 'Order Status', readonly=True)
 SaleReport()
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
