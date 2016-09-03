@@ -22,8 +22,7 @@ from openerp import models, fields, api, exceptions
 
 class SaleReport(models.Model):
     _inherit = 'sale.report'
-    _columns = {
-        'state': fields.selection([
+    state = fields.Selection([
             ('draft', 'Quotation'),
             ('sent', 'Quotation Sent'),
             ('waiting_date', 'Waiting Schedule'),
@@ -34,8 +33,5 @@ class SaleReport(models.Model):
             ('cancel', 'Cancelled'),
             ('invoiced', 'Invoiced'),
         ], 'Order Status', readonly=True),
-
-    }
-
 SaleReport()
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
