@@ -27,10 +27,10 @@ class ResPartner(models.Model):
     _inherit = 'res.partner'
 
     @api.multi
-    def query_sales(self, name, args):
+    def query_sales(self):
 
         res = {}
-        for main_partner in self.browse(id):
+        for main_partner in self:
             main_sales = main_partner.sale_order_ids or []  # in case it was False
             sales = [sale.id for sale in main_sales]
             for child_partner in main_partner.child_ids:
