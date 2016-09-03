@@ -18,11 +18,9 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
+from openerp import models, fields, api, exceptions
 
-from openerp import tools
-from openerp.osv import fields, osv
-
-class sale_report(osv.osv):
+class SaleReport(models.Model):
     _inherit = 'sale.report'
     _columns = {
         'state': fields.selection([
@@ -39,4 +37,5 @@ class sale_report(osv.osv):
 
     }
 
+SaleReport()
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

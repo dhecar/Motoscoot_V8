@@ -9,7 +9,7 @@
                       a la marca del producto. Requiere de product_brand.
                       * Añade relación entre usuario y tarifa""",
     "depends": ["product", "product_brand", "base"],
-    "update_xml": ["pricelist_view.xml"],
+    "data": ["views/pricelist_view.xml"],
     "active": True,
     "installable": True
 }

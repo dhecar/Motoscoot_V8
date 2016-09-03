@@ -22,66 +22,62 @@
 #
 ##############################################################################
 
-from openerp.osv import fields, osv
+from openerp import models, fields, api, exceptions
 import openerp.addons.decimal_precision as dp
 
 
-class carrier_file(osv.osv):
+class CarrierFile(models.Model):
     _inherit = 'delivery.carrier.file'
 
 
-    def _get_reembolso(self, cursor, user_id, context=None):
+    def _get_reembolso(self):
         return (
             ('N', 'NO'),
             ('O', 'Origen'),
             ('D', 'Destino'),
             ('A', 'Adelanto'))
 
-    def _get_typo(self, cursor, user_id, context=None):
+    def _get_typo(self):
         return (
             ('2', 'Nacex 10H'),
             ('8', 'Nacex 19H'),
             ('27', 'E Nacex'))
 
-    def _get_alerta(self, cursor, user_id, context=None):
+    def _get_alerta(self):
         return (
             ('E', 'Email'),
             ('S', 'SMS'))
 
-    def _get_tipo_paq(self, cursor, user_id, context=None):
+    def _get_tipo_paq(self):
         return (
             ('1', 'Bolsa'),
             ('2', 'Paquete'))
 
 
-    def get_type_selection(self, cr, uid, context=None):
-        result = super(carrier_file, self).get_type_selection(cr, uid, context=context)
+    def get_type_selection(self):
+        result = super(CarrierFile, self).get_type_selection()
         if 'Nacex' not in result:
             result.append(('Nacex', 'Envíos Nacex'))
         return result
 
-    _columns = {
-        'type': fields.selection(get_type_selection, 'Type'),
-        'nacex_account': fields.char('Nacex Account', size=9),
-        'nacex_typo': fields.selection(_get_typo, 'Tipo de servicio'),
-        'nacex_reembolso': fields.selection(_get_reembolso, 'Tipo de Reembolso'),
-        'nacex_paquete': fields.selection(_get_tipo_paq, 'Tipo Paquete'),
-        'nacex_cod_price': fields.float('Precio contrareembolso',
+
+    type =  fields.Selection(get_type_selection, 'Type')
+    nacex_account = fields.Char('Nacex Account', size=9)
+    nacex_typo = fields.Selection(_get_typo, 'Tipo de servicio')
+    nacex_reembolso = fields.Selection(_get_reembolso, 'Tipo de Reembolso')
+    nacex_paquete = fields.Selection(_get_tipo_paq, 'Tipo Paquete', default='2')
+    nacex_cod_price = fields.Float('Precio contrareembolso',
                                         digits_compute=dp.get_precision('Precio de reembolso'),
                                         help="Este precio es indicativo, para poder añadir un valor a la linea de venta"
                                              "debes hacerlo a mano o utilizar el módulo sine_delivery_extension"
-                                             "para añadir esta linea. (ten en cuenta que el precio debe ir sin IVA"),
-        'nacex_ealerta': fields.selection(_get_alerta, 'Tipo de Alerta',
+                                             "para añadir esta linea. (ten en cuenta que el precio debe ir sin IVA")
+    nacex_ealerta = fields.Selection(_get_alerta, 'Tipo de Alerta',
                                           help="Tipo de E-Alerta [Email o SMS que se envía al "
-                                               "remitente para indicar que se ha entregado el envió]"),
-        'nacex_prealerta': fields.selection(_get_alerta, 'Tipo Prealerta',
+                                               "remitente para indicar que se ha entregado el envió]")
+    nacex_prealerta = fields.Selection(_get_alerta, 'Tipo Prealerta',
                                             help=" Tipo de Prealerta [Email o SMS que se envía al"
-                                                 " destinatario para avisar previamente de la entrega]"),
-        'nacex_cash': fields.boolean('Contrareembolso?', help="Marcar para contrareembolso"),
+                                                 " destinatario para avisar previamente de la entrega]")
+    nacex_cash = fields.Boolean('Contrareembolso?', help="Marcar para contrareembolso")
 
-    }
 
-    _defaults = {
-        'nacex_paquete': lambda *a: '2',
-        }
-carrier_file()
+CarrierFile()

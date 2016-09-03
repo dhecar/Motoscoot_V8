@@ -20,7 +20,7 @@
 ##############################################################################
 import time
 from openerp import tools
-from openerp.osv import fields, orm
+from openerp import models, fields, api, exceptions
 from openerp.tools.translate import _
 
 import openerp.addons.decimal_precision as dp
@@ -32,33 +32,31 @@ def rounding(f, r):
     return round(f / r) * r
 
 
-class product_pricelist_item(orm.Model):
+class ProductPricelistItem(models.Model):
     _name = "product.pricelist.item"
     _inherit = "product.pricelist.item"
 
-    _columns = {
-        'brand_id': fields.many2one('product.brand', 'Marca del Producto', ondelete='cascade',
-                                    help="Especifica la marca sobre la que quieres aplicar la tarifa"),
-
-    }
+    brand_id = fields.Many2one(comodel_name= 'product.brand', string='Product Brand', ondelete='cascade',
+                               help="Select the brand  you want to link this pricelist")
 
 
-product_pricelist_item()
+ProductPricelistItem()
 
 
-class product_pricelist(orm.Model):
+class ProductPricelist(models.Model):
     _name = "product.pricelist"
     _inherit = "product.pricelist"
 
-    _columns = {
-        'user_link_ids': fields.many2many('res.users', 'pricelist_partner_rel', 'pricelist_id', 'user_id', required=True),
-    }
+    user_link_ids = fields.Many2many('res.users', 'pricelist_partner_rel', 'pricelist_id', 'user_id', required=True)
 
-    def _search(self, cr, user, args, offset=0, limit=None, order=None, context=None, count=False, access_rights_uid=None):
+    def _search(self, cr, user, args, offset=0, limit=None, order=None, context=None, count=False,
+                access_rights_uid=None):
         if context and context.get('pricelist_user_only'):
-            pricelist_ids = self.pool['res.users'].read(cr, user, user, ['pricelist_ids'], context=context)['pricelist_ids']
+            pricelist_ids = self.pool['res.users'].read(cr, user, user, ['pricelist_ids'], context=context)[
+                'pricelist_ids']
             args = [('id', 'in', pricelist_ids)] + args
-        return super(product_pricelist,self)._search(cr, user, args, offset, limit, order, context, count, access_rights_uid)
+        return super(ProductPricelist, self)._search(cr, user, args, offset, limit, order, context, count,
+                                                     access_rights_uid)
 
     # def price_get_multi(self, cr, uid, product_ids, context=None):
     def price_get_multi(self, cr, uid, pricelist_ids, products_by_qty_by_partner, context=None):
@@ -120,7 +118,7 @@ class product_pricelist(orm.Model):
         print plversion_ids[0]
         if len(pricelist_version_ids) != len(plversion_ids):
             msg = "At least one pricelist has no active version !\nPlease create or activate one."
-            raise osv.except_osv(_('Warning !'), _(msg))
+            raise Warning(_('Warning !'), _(msg))
             # product.product:
         product_ids = [i[0] for i in products_by_qty_by_partner]
         # products = dict([(item['id'], item) for item in product_obj.read(cr, uid, product_ids, ['categ_id', 'product_tmpl_id', 'uos_id', 'uom_id'])])
@@ -243,10 +241,14 @@ class product_pricelist(orm.Model):
 
         return results
 
-product_pricelist()
 
-class res_users(orm.Model):
+ProductPricelist()
+
+
+class ResUsers(models.Model):
     _inherit = 'res.users'
-    _columns = {
-        'pricelist_ids': fields.many2many('product.pricelist', 'pricelist_partner_rel', 'user_id', 'pricelist_id'),
-    }
+
+    pricelist_ids = fields.Many2many('product.pricelist', 'pricelist_partner_rel', 'user_id', 'pricelist_id')
+
+
+ResUsers()

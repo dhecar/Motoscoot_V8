@@ -5,11 +5,11 @@
             <field name="name">res.partner.restrict.view</field>
             <field name="model">res.partner</field>
             <field name="inherit_id" ref="base.view_partner_form" />
-            <field name="groups_id" eval="[(6, 0, [ref('ms_groups.group_barcelona_level0') ])]" />
+            <field name="groups_id" eval="[(6, 0, [ref('ms_groups.group_no_workshop_creation') ])]" />
             <field name="arch" type="xml">
 
                 <field name="category_id" position="replace" >
-                    <field name="category_id" widget="many2many_tags"  domain="[('name','!=','Taller')]" options="{'no_create': True,'no_create_edit': True,'no_quick_create': True}"/>
+                    <field name="category_id" widget="many2many_tags"  domain="[('name','ilike','Taller')]" options="{'no_create': True,'no_create_edit': True,'no_quick_create': True}"/>
                 </field>
 
             </field>

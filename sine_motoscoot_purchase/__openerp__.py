@@ -7,7 +7,7 @@
     "website" : "http://sinergiainformatica.net",
     "description": "Extension módulo purchase",
     "depends" : ["purchase", "sine_motoscoot_stock"],
-    "update_xml" : ["purchase_view.xml"],
+    "data" : ["views/purchase_view.xml"],
     "active": True,
     "installable": True
 }

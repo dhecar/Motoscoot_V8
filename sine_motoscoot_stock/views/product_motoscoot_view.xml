@@ -14,19 +14,19 @@
 
 
 <!--LOCATIONS EN VISTA PRODUCTO-->
-        <record id="nfx_view_normal_procurement_locations_form" model="ir.ui.view">
-            <field name="name">nfx_product.normal.procurement.locations.inherit</field>
+        <record id="inh_view_template_property_form" model="ir.ui.view">
+            <field name="name">inh.view.template.property.form</field>
             <field name="model">product.product</field>
-            <field name="inherit_id" ref="stock.view_normal_procurement_locations_form"/>
+            <field name="inherit_id" ref="stock.view_template_property_form"/>
             <field name="arch" type="xml">
-                <group name="lot" position="after" version="7.0">
+                <group name="lot" position="after">
                     <group string="Locations" attrs="{'invisible': [('type', '=', 'service')]}" groups="base.group_user">
                         <field name="locations" colspan="4" nolabel="1" context="{'product_id': active_id, 'only_with_stock': True}">
                             <tree string="Stock Location">
                                 <field name="complete_name" colspan="4"/>
                                 <field name="stock_real" colspan="4"/>
                                 <field name="stock_virtual" invisible="'product_id' not in context" colspan="4"/>
-				
+
                             </tree>
                         </field>
                     </group>
@@ -56,8 +56,8 @@
 <!-- VISTA KANBAN -->
 	<record model="ir.ui.view" id="motoscoot_product_kanban_stock_view">
 	    <field name="name">Product Kanban Stock</field>
-            <field name="model">product.product</field>
-            <field name="inherit_id" ref="product.product_kanban_view"/>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_kanban_view"/>
             <field name="arch" type="xml">
 
                 <xpath expr="//div[@name='tags']" position="before">
@@ -72,8 +72,8 @@
 
         <record id="product_internal_note_form" model="ir.ui.view">
             <field name="name">product.internal.note.inherit</field>
-            <field name="model">product.product</field>
-            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_only_form_view"/>
             <field name="arch" type="xml">
                     <field name="description" position="after">
                         <field name="internal_note"/>
@@ -85,10 +85,7 @@
 
                     <field name="list_price" position="after">
                         <field name="pvp_fabricante" label="Precio Base TT"/>
-                        <!--<field name="stock_grn" label="GRN"/>
-                        <field name="stock_bcn" label="BCN"/>
-				        <field name="stock_pt" label="PT"/>-->
-                        <field name="test" label="Stocks"/>
+                        <!--<field name="stock_by_loc" label="Stocks"/>-->
                         <field name="shared"/>
                         <field name="internet" readonly="1" label="Internet" icon="ICON_MAGENTO" />
                         <field name="label_print" label="Label print"/>

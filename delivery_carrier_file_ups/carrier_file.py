@@ -22,25 +22,26 @@
 #
 ##############################################################################
 
-from openerp.osv import fields, osv
-import openerp.addons.decimal_precision as dp
+from openerp import models, fields, api, exceptions
 
 
-class carrier_file(osv.osv):
+class CarrierFile(models.Model):
     _inherit = 'delivery.carrier.file'
 
-    def get_type_selection(self, cr, uid, context=None):
-        result = super(carrier_file, self).get_type_selection(cr, uid, context=context)
+
+    def get_type_selection(self):
+        result = super(CarrierFile, self).get_type_selection()
         if 'Ups' not in result:
             result.append(('Ups', 'Envíos UPS'))
         return result
 
-    def _get_package(self, cursor, user_id, context=None):
+    def _get_package(self):
         return (
             ('01', 'UPS Letter'),
             ('02', 'Customer Supplied Package'))
 
-    def _get_service(self, cursor, user_id, context=None):
+
+    def _get_service(self):
         return (
             ('1DA', 'Next Day Air'),
             ('2DA', '2nd Day Air'),
@@ -60,17 +61,15 @@ class carrier_file(osv.osv):
             ('85', 'UPS Today Express'),
             ('86', 'UPS Today Express Saver'))
 
-    _columns = {
-        'type': fields.selection(get_type_selection, 'Type', required=True),
-        'xml_export': fields.boolean('Exportar a Xml?', help="Si esta marcado se exportara a XML, si no a csv"),
-        'ups_account': fields.char('Ups Account', size=10),
-        'ups_package_type': fields.selection(_get_package, 'Tipo de paquete', help="Escoge el tipo de paquete"),
-        'ups_service_level': fields.selection(_get_service, 'Tipo de servicio', help="Tipo de servicio"),
-        'ups_description_goods': fields.char('Descripcion mercancia', size=30),
-        'ups_cash': fields.boolean('Contrareembolso?', help="Marcar para contrareembolso"),
-        'ups_cod_price': fields.float('Precio contrareembolso', digits_compute=dp.get_precision('Precio de reembolso')),
-        'ups_mail_notification': fields.char('Email Notificacion', size=120)
-    }
+    type = fields.Selection(get_type_selection, 'Type', required=True)
+    xml_export = fields.Boolean('Exportar a Xml?', help="Si esta marcado se exportara a XML, si no a csv")
+    ups_account = fields.Char('Ups Account', size=10)
+    ups_package_type = fields.Selection(_get_package, 'Tipo de paquete', help="Escoge el tipo de paquete")
+    ups_service_level = fields.Selection(_get_service, 'Tipo de servicio', help="Tipo de servicio")
+    ups_description_goods = fields.Char('Descripcion mercancia', size=30)
+    ups_cash = fields.Boolean('Contrareembolso?', help="Marcar para contrareembolso")
+    ups_cod_price = fields.Float('Precio contrareembolso')
+    ups_mail_notification = fields.Char('Email Notificacion', size=120)
 
 
-carrier_file()
+CarrierFile()

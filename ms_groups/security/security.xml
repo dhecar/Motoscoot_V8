@@ -3,25 +3,24 @@
 <openerp>
 <data noupdate="0">
 
-<!-- Barcelona -->
-    <record id="group_barcelona_level0" model="res.groups">
-        <field name="name">Barcelona Level0</field>
+
+    <record id="group_no_update_stock" model="res.groups">
+        <field name="name">No update stock</field>
     </record>
 
-    <!-- Barcelona -->
+    <record id="group_no_workshop_creation" model="res.groups">
+        <field name="name">No workshop creation</field>
+    </record>
+
+
     <record id="group_barcelona_level00" model="res.groups">
         <field name="name">Barcelona Level00</field>
     </record>
 
 
-<!-- Girona -->
-
-
     <record id="group_girona_level0" model="res.groups">
         <field name="name">Girona Level0</field>
     </record>
-
-
 
 </data>
 </openerp>

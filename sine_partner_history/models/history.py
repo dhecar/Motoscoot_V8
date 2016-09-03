@@ -20,16 +20,17 @@
 #
 ##############################################################################
 
-from openerp.osv import fields, osv
+from openerp import models, fields, api, exceptions
 
 
-class res_partner(osv.osv):
-    def query_sales(self, cr, uid, ids, field_name, arg, context=None):
+class ResPartner(models.Model):
+    _inherit = 'res.partner'
+
+    @api.multi
+    def query_sales(self, name, args):
 
         res = {}
-        if isinstance(ids, (int, long)):
-            ids = [ids]  # in case an id was passed in directly
-        for main_partner in self.browse(cr, uid, ids, context=context):
+        for main_partner in self.browse(id):
             main_sales = main_partner.sale_order_ids or []  # in case it was False
             sales = [sale.id for sale in main_sales]
             for child_partner in main_partner.child_ids:
@@ -43,31 +44,22 @@ class res_partner(osv.osv):
 
         return res
 
-    _inherit = 'res.partner'
-    _columns = {
-
-        'sale_history': fields.function(query_sales, type='one2many', obj='sale.order', method=True,
-                                        string='Sales', ),
-    }
-
-res_partner()
+    sale_history = fields.One2many(compute='query_sales',comodel_name='sale.order', string='Sales' )
 
 
-class sale_order(osv.osv):
+ResPartner()
+
+
+class SaleOrder(models.Model):
     _inherit = 'sale.order'
-    _columns = {
-        'partner_history_ids': fields.many2one('res.partner', 'Historic', select=True, readonly=True,),
 
-        'date_order': fields.date('Date', required=True, readonly=True, select=True, states={'draft': [('readonly', False)], 'sent': [('readonly', False)]}),
-        'picking_status': fields.related('picking_ids', 'state', type='char', string="Estado envio"),
-        'date_send': fields.related('picking_ids', 'date_done', type='char', string="Fecha Envio"),
-        'invoice_status': fields.related('invoiced', type='boolean', string="Estado Factura"),
-        'payment_typ': fields.related('payment_type', relation="payment.type", type='many2one', string="Tipo Pago", readonly=True),
-        'traking': fields.related('picking_ids', 'carrier_tracking_ref', type='char', string="Tracking"),
+    partner_history_ids =  fields.Many2one(comodel_name='res.partner', string="Historic", readonly=True,)
+    date_order = fields.Date('Date', required=True, readonly=True, select=True, states={'draft': [('readonly', False)], 'sent': [('readonly', False)]})
+    picking_status = fields.Selection(related='picking_ids.state',  string="Estado envio",readonly=True)
+    date_send = fields.Datetime(related='picking_ids.date_done',  string="Fecha Envio")
+    invoice_status = fields.Boolean(related='invoiced', string="Estado Factura")
+    payment_typ = fields.Many2one(comodel_name="payment.type", inverse_name="payment_type" , string="Tipo Pago", readonly=True)
+    traking = fields.Char(related='picking_ids.carrier_tracking_ref',  string="Tracking", store=True)
 
-
-    }
-
-
-sale_order()
+SaleOrder()
 

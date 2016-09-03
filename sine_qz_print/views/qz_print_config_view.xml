@@ -8,13 +8,28 @@
             <field name="type">form</field>
             <field name="arch" type="xml">
                     <form string="Print/Labels configuration">
-                        <field name="name"/>
-                        <field name="qz_printer"/>
-                        <field name="qz_default" />
-                        <field name="qz_label_height"/>
-                        <field name="qz_label_gap" />
-                        <field name="qz_label_width" />
-		                <field name="model_id" on_change="onchange_model(model_id)"/>
+                        <label for="name" class="oe_edit_only"/>
+                            <field name="name"/>
+                        <label for="qz_printer" class="oe_edit_only"/>
+                            <field name="qz_printer"/>
+
+                        <label for="qz_label_height" class="oe_edit_only"/>
+
+                            <field name="qz_label_height"/>
+
+                        <label for="qz_label_gap" class="oe_edit_only"/>
+
+                            <field name="qz_label_gap"/>
+
+                        <label for="qz_label_width" class="oe_edit_only"/>
+
+                            <field name="qz_label_width"/>
+
+                        <label for="model_id" class="oe_edit_only"/>
+
+                            <field name="model_id" on_change="onchange_model(model_id)"/>
+
+
                         <field name="model_list" invisible="1"/>
                         <notebook colspan="4">
                         <page string="Fields">

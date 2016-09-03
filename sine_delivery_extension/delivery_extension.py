@@ -2,29 +2,21 @@
 
 
 import time
-from openerp.osv import fields, osv
 from openerp.tools.translate import _
 import openerp.addons.decimal_precision as dp
+from openerp import models, fields, api, exceptions
 
-
-class delivery_carrier(osv.osv):
+class delivery_carrier(models.Model):
     _inherit = 'delivery.carrier'
 
-    _columns = {
-        'cod_price': fields.float('COD Price', digits_compute=dp.get_precision('COD value'),
-                                  help="Add new line with COD price"),
+    cod_price = fields.Float('COD Price', digits_compute=dp.get_precision('COD value'),
+                                  help="Add new line with COD price")
 
-    }
+delivery_carrier()
 
 
-class sale_order(osv.osv):
+class sale_order(models.Model):
     _inherit = 'sale.order'
-    # _columns = {
-    #        'carrier_id':fields.many2one("delivery.carrier", "Delivery Method", help="Complete this field if you plan to invoice the shipping based on picking."),
-    #    }
-    _columns = {
-    }
-
 
     def delivery_set(self, cr, uid, ids, context=None):
         order_obj = self.pool.get('sale.order')
@@ -76,6 +68,6 @@ class sale_order(osv.osv):
         return True
 
 
-delivery_carrier()
+sale_order()
 
 

@@ -1,23 +1,16 @@
 # -*- coding: utf-8 -*-
-from openerp.osv import fields, osv
+from openerp import models, fields, api, exceptions
 from zebra import zebra
 from time import sleep
 import unicodedata
-from openerp import models, exceptions, _
 
 
-class QzPrint(osv.Model):
+
+class QzPrint(models.Model):
     _name = 'qz.print'
     _description = 'Qz Print Labels'
 
-    _columns = {
-        'copies': fields.integer('Num of Copy:', required=True),
-    }
-
-    _defaults = {
-
-        'copies': 1,
-    }
+    copies = fields.Integer(string='Num of Copy:', required=True, default='1')
 
     # Get default label printer for current user
     def get_default_label_printer(self, cr, uid, field_names=None, arg=None, context=None):
@@ -47,71 +40,74 @@ class QzPrint(osv.Model):
         # Get model to print from qz.config and field_id also:
 
         if pool_ids:
-            for i in pool_obj.browse(cr, uid, pool_ids, context=context):
-                # Model from I get info
-                model = i.model_id.model
-                partial_result = []
-                for fields in i.qz_field_ids:
+            for prod_id in record_ids:
+                for i in pool_obj.browse(cr, uid, pool_ids, context=context):
+                    # Model from I get info
+                    model = i.model_id.model
+                    partial_result = []
+                    for fields in i.qz_field_ids:
 
-                    # Fields name to search in model
-                    name_field = fields.qz_field_id.name
-                    # Get fields from Model
-                    printing_field = self.pool.get(model).read(cr, uid, record_ids, [name_field], context=context)
-                    # Limit to 40 characters on long lines
-                    for x in printing_field:
-                        print_field = x[name_field]
-                        if len(print_field) > 40:
-                            print_field = print_field[:40] + '..'
-                        else:
-                            print_field = print_field
-                    # Barcode Format: Bp1,p2,p3,p4,p5,p6,p7,p8,"DATA"\n
+                        # Fields name to search in model
+                        name_field = fields.qz_field_id.name
+                        # Get fields from Model
+                        printing_field = self.pool.get(model).read(cr, uid, record_ids, [name_field], context=context)
+                        # Limit to 40 characters on long lines
 
-                    if fields.qz_field_type == 'barcode':
-                        data = []
-                        data += {'B' + str(fields.h_start_p1) + ',' +
-                                 str(fields.v_start_p2) + ',' +
-                                 str(fields.rotation_p3) + ',' +
-                                 str(fields.bar_sel_p4) + ',' +
-                                 str(fields.n_bar_w_p5) + ',' +
-                                 str(fields.w_bar_w_p6) + ',' +
-                                 str(fields.bar_height_p7) + ',' +
-                                 str(fields.human_read_p8) + ',' + '"' +
-                                 str(print_field) + '"' + '\n'}
+                        for x in printing_field:
+                            if x[name_field]:
+                                print_field = x[name_field]
+                                if len(print_field) > 40:
+                                    print_field = print_field[:40] + '..'
+                                else:
+                                    print_field = print_field
+                                # Barcode Format: Bp1,p2,p3,p4,p5,p6,p7,p8,"DATA"\n
+
+                                if fields.qz_field_type == 'barcode':
+                                    data = []
+                                    data += {'B' + str(fields.h_start_p1) + ',' +
+                                        str(fields.v_start_p2) + ',' +
+                                        str(fields.rotation_p3) + ',' +
+                                        str(fields.bar_sel_p4) + ',' +
+                                        str(fields.n_bar_w_p5) + ',' +
+                                        str(fields.w_bar_w_p6) + ',' +
+                                        str(fields.bar_height_p7) + ',' +
+                                        str(fields.human_read_p8) + ',' + '"' +
+                                        str(print_field) + '"' + '\n'}
 
 
-                    # Text field Format: Ap1,p2,p3,p4,p5,p6,p7,"DATA"\n
-                    else:
+                                # Text field Format: Ap1,p2,p3,p4,p5,p6,p7,"DATA"\n
+                                else:
 
-                        data = []
-                        data += {'A' + str(fields.h_start_p1) + ',' +
-                                 str(fields.v_start_p2) + ',' +
-                                 str(fields.rotation_p3) + ',' +
-                                 str(fields.font_p4) + ',' +
-                                 str(fields.h_multiplier_p5) + ',' +
-                                 str(fields.v_multiplier_p6) + ',' +
-                                 str(fields.n_r_p7) + ',' + '"' +
-                                 unicodedata.normalize('NFKD', print_field).encode('ascii',
-                                                                                   'ignore') + '"' + '\n'}
+                                    data = []
+                                    data += {'A' + str(fields.h_start_p1) + ',' +
+                                        str(fields.v_start_p2) + ',' +
+                                        str(fields.rotation_p3) + ',' +
+                                        str(fields.font_p4) + ',' +
+                                        str(fields.h_multiplier_p5) + ',' +
+                                        str(fields.v_multiplier_p6) + ',' +
+                                        str(fields.n_r_p7) + ',' + '"' +
+                                            unicodedata.normalize('NFKD', print_field).encode('ascii',
+                                                                                           'ignore') + '"' + '\n'}
 
-                    """
-                    Example of ELP commands to send
-                    N
-                    A40,80,0,4,1,1,N,"Tangerine Duck 4.4%"
-                    A40,198,0,3,1,1,N,"Duty paid on 39.9l"
-                    A40,240,0,3,1,1,N,"Gyle: 127     Best Before: 16/09/2011"
-                    A40,320,0,4,1,1,N,"Pump & Truncheon"
-                    P1
-                    """
-                    # Partial result that create one line for each field to print
+                                    """
+                                    Example of ELP commands to send
+                                    N
+                                    A40,80,0,4,1,1,N,"Tangerine Duck 4.4%"
+                                    A40,198,0,3,1,1,N,"Duty paid on 39.9l"
+                                    A40,240,0,3,1,1,N,"Gyle: 127     Best Before: 16/09/2011"
+                                    A40,320,0,4,1,1,N,"Pump & Truncheon"
+                                    P1
+                                    """
+                                    # Partial result that create one line for each field to print
 
-                    partial_result += data
+                                partial_result += data
 
-                strings = '\n'.join(partial_result)
-                result = '"""\n' + 'N\n'
-                result += strings
-                result += 'P1\n"""'
+                            strings = '\n'.join(partial_result)
+                            result = '"""\n' + 'N\n'
+                            result += strings
+                            result += 'P1\n"""'
 
-            return result
+                return result
 
     # Print EPL data
 

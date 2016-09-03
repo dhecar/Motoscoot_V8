@@ -40,7 +40,7 @@ Definition of the delivery carrier file for "Ups".
     'website': 'http://www.sinergianinformatica.net',
     'depends': ['base_delivery_carrier_files'],
     'init_xml': [],
-    'update_xml': ['carrier_file_view.xml'],
+    'data': ['carrier_file_view.xml'],
     'demo_xml': [],
     'test': [],
     'images': [],

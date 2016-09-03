@@ -1,7 +1,6 @@
 # -*- encoding: utf-8 -*-
 ##############################################################################
 #
-# Module Writen to OpenERP, Open Source Management Solution
 #    Sinergiainformatica.net
 #    David Hernández (soporte@sinergiainformatica.net)
 #
@@ -21,31 +20,22 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##############################################################################
 
-from openerp.osv import fields, osv
+from openerp import models, fields, api, exceptions
 
 
-class res_partner_category(osv.osv):
+class res_partner_category(models.Model):
     _inherit = 'res.partner.category'
-
-    _columns = {
-
-        'pricelist': fields.many2one('product.pricelist', 'Asociated Pricelist',
-                                     help="Link this Category with a Pricelist", required=True),
-    }
+    pricelist = fields.Many2one('product.pricelist', 'Asociated Pricelist',
+                                     help="Link this Category with a Pricelist", required=True)
 
 
-class res_partner(osv.osv):
+
+class res_partner(models.Model):
     _inherit = 'res.partner'
 
-    def onchange_category(self, cr, uid, id, category_id, parent_id, context=None):
-        if category_id:
-            #parent_id = self.pool.get('res.partner').browse(cr, uid, id[0], context)
-            pricelist_id = self.pool.get('res.partner.category').browse(cr, uid, category_id[0][2], context)
-            if not parent_id:
-                if pricelist_id:
-                    return {'value': {'property_product_pricelist': pricelist_id[0].pricelist.id}}
-                else:
-                    return {'value': {'property_product_pricelist': 1}}
+    @api.onchange('category_id')
 
-            return {}
+    def onchange_category(self):
+        if self.category_id:
 
+            return{}
