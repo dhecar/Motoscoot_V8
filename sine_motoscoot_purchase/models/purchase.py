@@ -25,7 +25,7 @@ class PurchaseOrderLine(models.Model):
     _inherit = 'purchase.order.line'
 
 
-    sum_stock = fields.Char(related='product_id.stock_by_loc', string='Stocks'),
+    sum_stock = fields.Char(related='product_id.stock_by_loc', string='Stocks')
     incoming = fields.Float(related='product_id.incoming_qty',string='IN')
     outgoing = fields.Float(related='product_id.outgoing_qty', string='OUT')
 
