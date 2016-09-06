@@ -25,7 +25,7 @@ class SaleOrderLine(models.Model):
 
     # STOCK IN EACH LOCATION
     @api.one
-    def StockByLocation(self):
+    def StockByLocation(self,name, args):
 
         db_obj = self.pool['base.external.dbsource']
 
