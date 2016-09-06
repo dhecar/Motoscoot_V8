@@ -9,6 +9,6 @@
     "depends" : ['base', 'product'],
     "data" : ['views/res_partner_view.xml'],
     "active": True,
-    "installable": True
+    "installable": False
 }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
