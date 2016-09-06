@@ -65,7 +65,7 @@ class ProductTemplate(models.Model):
             res[i] = qty
         return res
 
-    stock_by_loc = fields.Text(compute=StockByLocation, string='Stocks')
+    stock_by_loc = fields.One2many(compute=StockByLocation, string='Stocks')
     internal_note = fields.Text(string='Nota Interna', translate=True)
     shared = fields.Boolean(string='Shared', help='Share this product with SCTV?')
     pvp_fabricante = fields.Float(string='Precio Base TT',
