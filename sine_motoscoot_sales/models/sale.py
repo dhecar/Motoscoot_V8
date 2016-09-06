@@ -79,7 +79,7 @@ class SaleOrderLine(models.Model):
 
     _inherit = 'sale.order.line'
 
-    sum_stock = fields.Text(compute=StockByLocation, string='Stocks', size=30)
+    sum_stock = fields.One2many(compute=StockByLocation, string='Stocks', size=30)
     incoming = fields.Float(related='product_id.incoming_qty', string='IN')
     outgoing = fields.Float(related='product_id.outgoing_qty', string='OUT')
     product_id = fields.Many2one(comodel_name='product.product', string='Product', domain=[('sale_ok', '=', True)],
