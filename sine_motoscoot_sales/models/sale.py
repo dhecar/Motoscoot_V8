@@ -25,7 +25,7 @@ class SaleOrderLine(models.Model):
 
     # STOCK IN EACH LOCATION
     @api.one
-    def StockByLocation(self,name, args):
+    def StockByLocation(self):
 
         db_obj = self.pool['base.external.dbsource']
 
@@ -80,7 +80,7 @@ class SaleOrderLine(models.Model):
 
     _inherit = 'sale.order.line'
 
-    sum_stock = fields.Char(compute=StockByLocation, string='Stocks', size=30)
+    sum_stock = fields.Char(compute=StockByLocation, string='Stocks')
     incoming = fields.Float(related='product_id.incoming_qty', string='IN')
     outgoing = fields.Float(related='product_id.outgoing_qty', string='OUT')
     product_id = fields.Many2one(comodel_name='product.product', string='Product', domain=[('sale_ok', '=', True)],
