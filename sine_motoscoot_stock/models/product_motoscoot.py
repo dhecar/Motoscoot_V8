@@ -87,10 +87,11 @@ class ProductProduct(models.Model):
     @api.model
     def StockByLocation(self):
 
-        db_obj = self.pool['base.external.dbsource']
-        location_id = 12
+        #db_obj = self.pool['base.external.dbsource']
+        #location_id = 12
         res = {}
-        for i in self.browse():
+        for i in self:
+            print i.id
             # 'B' DB
             #ads = db_obj.get_stock(cr, SUPERUSER_ID, ids, i, location_id,
             #                       context=context)
@@ -102,7 +103,7 @@ class ProductProduct(models.Model):
                                         END AS LOC FROM stock_quant
 
                                         WHERE (location_id ='12' OR location_id ='19' OR location_id='15')
-                                        AND product_id = '%s'  GROUP BY location_id ORDER BY location_id""" % i)
+                                        AND product_id = '%s'  GROUP BY location_id ORDER BY location_id""" % i.id)
             res[i] = self.env.cr.dictfetchall()
 
             if not res[i]:
@@ -119,7 +120,7 @@ class ProductProduct(models.Model):
                 qty += '[' + str(res[i][counter - 1]['loc']) + ":" + str(res[i][counter - 1]['qty']) + ']'
 
             res[i] = qty
-            i.stock_by_loc = str(res)
+            i.stock_by_loc = res.values()
 
 
     stock_by_loc = fields.Char(compute=StockByLocation, string='Stocks')
