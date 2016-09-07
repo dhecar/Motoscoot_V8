@@ -23,6 +23,10 @@ from openerp import SUPERUSER_ID
 
 class SaleOrderLine(models.Model):
 
+    def StockSearch(self):
+        for rec in self:
+            rec.sum_stock = rec.sum_stock
+
     # STOCK IN EACH LOCATION
     @api.multi
     def StockByLocation(self):
@@ -67,20 +71,20 @@ class SaleOrderLine(models.Model):
                 qty_final = ""
                 for location in res[line.id]:
                     counter += 1
-                    qty += '[' + str(res[line.id][counter - 1]['loc']) + ":" + str(
-                        res[line.id][counter - 1]['qty']) + ']'
+                    qty += '[' + str(res[line.id][counter - 1]['loc']) + ":" + str(res[line.id][counter - 1]['qty']) + ']'
                 qty_final += '[' + qty + ']'
 
                 res[line.id] = qty_final
 
-            result = str(res)   # The result is like [[G:qty][B:qty][P:qty]]
 
-        return result
+                line.sum_stock = str(res)
+
 
 
     _inherit = 'sale.order.line'
 
-    sum_stock = fields.Char(compute=StockByLocation, string='Stocks')
+
+    sum_stock = fields.Char(compute='StockByLocation', string='Stocks', size=40)
     incoming = fields.Float(related='product_id.incoming_qty', string='IN')
     outgoing = fields.Float(related='product_id.outgoing_qty', string='OUT')
     product_id = fields.Many2one(comodel_name='product.product', string='Product', domain=[('sale_ok', '=', True)],

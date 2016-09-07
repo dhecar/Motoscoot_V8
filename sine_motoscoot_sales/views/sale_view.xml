@@ -9,15 +9,14 @@
             <field name="inherit_id" ref="sale.view_order_form" />
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='order_line']/tree/field[@name='product_id']" position="before">
-                    <field name="sum_stock" />
+                    <field name="sum_stock" readonly="True"/>
+
                     <field name="incoming" />
                     <field name="outgoing" />
 
 		        </xpath>
 
-                <xpath expr="//field[@name='order_line']/tree/field[@name='sum_stock']" position="attributes">
-                        <attribute name="style">width: 50%;</attribute>
-                </xpath>
+
 
                 <field name="pricelist_id" position="attributes">
                     <attribute name="context">{'pricelist_user_only':True}</attribute>
