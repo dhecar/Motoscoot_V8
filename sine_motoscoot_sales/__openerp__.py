@@ -6,7 +6,7 @@
     "category" : "Generic Modules/Others",
     "website" : "http://sinergiainformatica.net",
     "description": "Extension módulo sale",
-    "depends" : ["sale","sine_motoscoot_stock","base_delivery_carrier_files"],
+    "depends" : [],
     # "data" : ["views/sale_view.xml","views/partner_motoscoot_view.xml"],
     "data" : ["views/sale_view.xml"],
     "active": True,
