@@ -6,7 +6,7 @@
     "category": "Generic Modules/Others",
     "website": "http://sinergiainformatica.net",
     "description": "Extension.",
-    "depends": ["product",  "stock", "sale"],
+    "depends": ["product",  "stock",],
     "data": ["views/product_motoscoot_view.xml"],
     "active": True,
     "installable": True
