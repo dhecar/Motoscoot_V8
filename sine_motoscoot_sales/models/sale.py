@@ -24,7 +24,7 @@ from openerp import SUPERUSER_ID
 class SaleOrderLine(models.Model):
 
     # STOCK IN EACH LOCATION
-    @api.one
+    @api.multi
     def StockByLocation(self):
 
         db_obj = self.pool['base.external.dbsource']
@@ -73,9 +73,9 @@ class SaleOrderLine(models.Model):
 
                 res[line.id] = qty_final
 
-                # The result is like [[G:qty][B:qty][P:qty]]
+            result = str(res)   # The result is like [[G:qty][B:qty][P:qty]]
 
-        return res
+        return result
 
 
     _inherit = 'sale.order.line'

@@ -119,7 +119,8 @@ class ProductProduct(models.Model):
                 qty += '[' + str(res[i][counter - 1]['loc']) + ":" + str(res[i][counter - 1]['qty']) + ']'
 
             res[i] = qty
-        return res
+            result = str(res)
+        return result
 
     stock_by_loc = fields.Char(compute=StockByLocation, string='Stocks')
     internal_note = fields.Text(string='Nota Interna', translate=True)
