@@ -91,7 +91,7 @@ class ProductProduct(models.Model):
         #location_id = 12
         res = {}
         for i in self:
-            print i.id
+
             # 'B' DB
             #ads = db_obj.get_stock(cr, SUPERUSER_ID, ids, i, location_id,
             #                       context=context)
