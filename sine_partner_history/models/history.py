@@ -51,6 +51,7 @@ ResPartner()
 
 
 class SaleOrder(models.Model):
+    _name= 'sale.order'
     _inherit = 'sale.order'
 
     partner_history_ids =  fields.Many2one(comodel_name='res.partner', string="Historic", readonly=True,)
