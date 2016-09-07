@@ -22,7 +22,7 @@ from openerp import models, fields, api, exceptions
 class SaleOrderLine(models.Model):
 
     # STOCK IN EACH LOCATION
-
+    _name = 'sale.order.line'
     _inherit = 'sale.order.line'
 
     sum_stock = fields.Char(related='product_id.stock_by_loc', string='Stocks')
@@ -36,6 +36,7 @@ SaleOrderLine()
 
 
 class SaleOrder(models.Model):
+    _name = 'sale.order'
     _inherit = 'sale.order'
 
     sale_internal_comment = fields.Text(string='Internal Comment')
