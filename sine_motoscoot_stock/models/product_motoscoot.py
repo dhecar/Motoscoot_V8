@@ -37,7 +37,7 @@ class ProductTemplate(models.Model):
         res = {}
         for i in self.browse():
             # 'B' DB
-            #ads = db_obj.get_stock(cr, SUPERUSER_ID, ids, i, location_id,
+            # ads = db_obj.get_stock(cr, SUPERUSER_ID, ids, i, location_id,
             #                       context=context)
 
             self.env.cr.execute(""" SELECT SUM(qty) AS QTY, CASE
@@ -87,13 +87,13 @@ class ProductProduct(models.Model):
     @api.model
     def StockByLocation(self):
 
-        #db_obj = self.pool['base.external.dbsource']
-        #location_id = 12
+        # db_obj = self.pool['base.external.dbsource']
+        # location_id = 12
         res = {}
         for i in self:
 
             # 'B' DB
-            #ads = db_obj.get_stock(cr, SUPERUSER_ID, ids, i, location_id,
+            # ads = db_obj.get_stock(cr, SUPERUSER_ID, ids, i, location_id,
             #                       context=context)
 
             self.env.cr.execute(""" SELECT SUM(qty) AS QTY, CASE
@@ -121,7 +121,6 @@ class ProductProduct(models.Model):
 
             res[i] = qty
             i.stock_by_loc = res.values()
-
 
     stock_by_loc = fields.Char(compute=StockByLocation, string='Stocks')
     internal_note = fields.Text(string='Nota Interna', translate=True)
