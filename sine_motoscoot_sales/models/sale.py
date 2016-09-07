@@ -23,7 +23,7 @@ from openerp import models, fields, api, exceptions
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
 
-    # sum_stock = fields.Char(related='product_id.stock_by_loc', string='Stocks')
+    sum_stock = fields.Char(related='product_id.stock_by_loc', string='Stocks')
     incoming = fields.Float(related='product_id.incoming_qty', string='IN')
     outgoing = fields.Float(related='product_id.outgoing_qty', string='OUT')
     product_id = fields.Many2one(comodel_name='product.product', string='Product', domain=[('sale_ok', '=', True)],
