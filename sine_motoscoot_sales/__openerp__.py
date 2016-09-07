@@ -6,7 +6,7 @@
     "category" : "Generic Modules/Others",
     "website" : "http://sinergiainformatica.net",
     "description": "Extension módulo sale",
-    "depends" : [],
+    "depends" : ["sale"],
     # "data" : ["views/sale_view.xml","views/partner_motoscoot_view.xml"],
     "data" : ["views/sale_view.xml"],
     "active": True,
