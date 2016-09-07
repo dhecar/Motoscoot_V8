@@ -38,7 +38,7 @@ SaleOrderLine()
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
-    sale_internal_comment = fields.Text('Internal Comment', help='')
+    sale_internal_comment = fields.Text(string='Internal Comment', help='')
     picking_status = fields.Selection(related='picking_ids.state', string="Estado envio")
     # date_send = fields.Datetime(related='picking_ids.date_done', string="Fecha Envio")
     invoice_status = fields.Boolean(related='invoiced', string="Estado Factura")
