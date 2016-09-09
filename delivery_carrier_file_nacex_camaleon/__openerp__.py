@@ -38,7 +38,7 @@ Definition of the delivery carrier file for "Nacex".
     'author': 'SinergiaInformatica. David Hernández',
     'license': 'AGPL-3',
     'website': 'http://www.sinergiainformatica.net',
-    'depends': ['base_delivery_carrier_files', 'sine_delivery_extension'],
+    'depends': ['base_delivery_carrier_files'],
     'data': ['views/carrier_file_view.xml'],
     'demo_xml': [],
     'test': [],
