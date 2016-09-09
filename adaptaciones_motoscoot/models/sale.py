@@ -21,22 +21,21 @@ from openerp import models, fields, api, exceptions
 
 
 class SaleOrderLine(models.Model):
-    _name= 'sale.order.line'
+    _name = 'sale.order.line'
     _inherit = 'sale.order.line'
-
 
     # STOCK IN EACH LOCATION
     @api.model
     def _compute_sum_stock(self):
 
-        #db_obj = self.pool['base.external.dbsource']
+        # db_obj = self.pool['base.external.dbsource']
 
         res = {}
         for line in self:
             if line.product_id:
                 product = line.product_id.id
                 location_id = 12
-                #ads = db_obj.get_stock(cr, SUPERUSER_ID, ids, product, location_id,
+                # ads = db_obj.get_stock(cr, SUPERUSER_ID, ids, product, location_id,
                 #                       context=context)
 
                 self.env.cr.execute(""" SELECT SUM(qty) AS QTY, CASE
@@ -60,13 +59,11 @@ class SaleOrderLine(models.Model):
                 qty_final = ""
                 for location in res[line.id]:
                     counter += 1
-                    qty += '[' + str(res[line.id][counter - 1]['loc']) + ":" + str(
-                        res[line.id][counter - 1]['qty']) + ']'
-                qty_final += '[' + qty + ']'
+                    qty += '  ' + str(res[line.id][counter - 1]['loc']) + "=" + str(
+                        res[line.id][counter - 1]['qty']) + '    '
+                qty_final += qty
 
-                line.sum_stock= qty_final
-
-
+                line.sum_stock = qty_final
 
     sum_stock = fields.Char(compute='_compute_sum_stock', string='Stocks')
     incoming = fields.Float(related='product_id.incoming_qty', string='IN')
@@ -79,14 +76,14 @@ SaleOrderLine()
 
 
 class SaleOrder(models.Model):
-    _name ='sale.order'
+    _name = 'sale.order'
     _inherit = 'sale.order'
 
     sale_internal_comment = fields.Text(string='Internal Comment')
     picking_status = fields.Selection(related='picking_ids.state', string="Estado envio")
     # date_send = fields.Datetime(related='picking_ids.date_done', string="Fecha Envio")
     invoice_status = fields.Boolean(related='invoiced', string="Estado Factura")
-    traking = fields.Char(related='picking_ids.carrier_tracking_ref', string="Tracking")
+    tracking = fields.Char(related='picking_ids.carrier_tracking_ref', string="Tracking")
 
 
 SaleOrder()

@@ -47,7 +47,7 @@
 
                     <field name="date_order" position="before">
                        <field name="picking_status" readonly="1" />
-                       <field name="traking" readonly="1" />
+                       <field name="tracking" readonly="1" />
                        <field name="invoice_status" readonly="1" />
                     </field>
 
