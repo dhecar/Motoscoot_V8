@@ -6,7 +6,7 @@
             <field name="model">sale.order</field>
             <field name="priority" eval="20"/>
             <field name="inherit_id" ref="sale.view_order_form" />
-            <field name="groups_id" eval="[(6, 0, [ref('ms_groups.group_barcelona_level00')])]" />
+            <field name="groups_id" eval="[(6, 0, [ref('group_barcelona_level00')])]" />
             <field name="arch" type="xml">
 
                 <field name="price_unit" position="attributes" >
@@ -63,8 +63,8 @@
             <field name="model">sale.order</field>
             <field name="priority" eval="20"/>
             <field name="inherit_id" ref="sale.view_order_tree" />
-            <field name="groups_id" eval="[(6, 0, [ref('ms_groups.group_barcelona_level0')]),
-                            (6, 0, [ref('ms_groups.group_girona_level0')])]" />
+            <field name="groups_id" eval="[(6, 0, [ref('group_barcelona_level00')]),
+                            (6, 0, [ref('group_girona_level0')])]" />
             <field name="arch" type="xml">
                 <field name="amount_total" position="attributes">
                     <attribute name="invisible">True</attribute>
@@ -81,8 +81,8 @@
             <field name="model">sale.order</field>
             <field name="priority" eval="20"/>
             <field name="inherit_id" ref="sale.view_quotation_tree" />
-            <field name="groups_id" eval="[(6, 0, [ref('ms_groups.group_barcelona_level0')]),
-                            (6, 0, [ref('ms_groups.group_girona_level0')])]" />
+            <field name="groups_id" eval="[(6, 0, [ref('group_barcelona_level00')]),
+                            (6, 0, [ref('group_girona_level0')])]" />
             <field name="arch" type="xml">
                 <field name="amount_total" position="attributes">
                     <attribute name="invisible">True</attribute>
@@ -99,8 +99,8 @@
             <field name="model">account.invoice</field>
             <field name="priority" eval="20"/>
             <field name="inherit_id" ref="account.invoice_tree" />
-            <field name="groups_id" eval="[(6, 0, [ref('ms_groups.group_barcelona_level0')]),
-                            (6, 0, [ref('ms_groups.group_girona_level0')])]" />
+            <field name="groups_id" eval="[(6, 0, [ref('group_barcelona_level00')]),
+                            (6, 0, [ref('group_girona_level0')])]" />
             <field name="arch" type="xml">
                 <field name="residual" position="attributes">
                     <attribute name="invisible">True</attribute>

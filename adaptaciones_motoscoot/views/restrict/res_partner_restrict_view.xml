@@ -5,7 +5,7 @@
             <field name="name">res.partner.restrict.view</field>
             <field name="model">res.partner</field>
             <field name="inherit_id" ref="base.view_partner_form" />
-            <field name="groups_id" eval="[(6, 0, [ref('ms_groups.group_no_workshop_creation') ])]" />
+            <field name="groups_id" eval="[(6, 0, [ref('group_no_workshop_creation') ])]" />
             <field name="arch" type="xml">
 
                 <field name="category_id" position="replace" >

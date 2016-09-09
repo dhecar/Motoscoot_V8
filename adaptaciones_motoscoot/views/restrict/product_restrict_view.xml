@@ -6,7 +6,7 @@
             <field name="name">product.stock.restrict.view</field>
             <field name="model">product.template</field>
             <field name="inherit_id" ref="stock.view_template_property_form" />
-            <field name="groups_id" eval="[(6, 0, [ref('ms_groups.group_no_update_stock') ])]" />
+            <field name="groups_id" eval="[(6, 0, [ref('group_no_update_stock') ])]" />
             <field name="arch" type="xml">
 
                 <xpath expr='//button[@string="⇒ Update"]' position='attributes'>
