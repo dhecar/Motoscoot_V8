@@ -35,14 +35,12 @@ Sub-module for Base Delivery Carrier Files.
 Definition of the delivery carrier file for "Ups".
 
     """,
-    'author': 'David Hernández',
+    'author': 'SinergiaInformatica. David Hernández',
     'license': 'AGPL-3',
-    'website': 'http://www.sinergianinformatica.net',
+    'website': 'http://www.sinergiainformatica.net',
     'depends': ['base_delivery_carrier_files'],
     'init_xml': [],
-    'data': ['carrier_file_view.xml'],
-    'demo_xml': [],
-    'test': [],
+    'data': ['views/carrier_file_view.xml'],
     'images': [],
     'installable': True,
     'auto_install': False,

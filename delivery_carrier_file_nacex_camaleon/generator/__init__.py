@@ -19,4 +19,4 @@
 #
 ##############################################################################
 
-import nacex_generator
+from . import nacex_generator

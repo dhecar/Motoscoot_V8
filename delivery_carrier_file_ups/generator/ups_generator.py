@@ -29,8 +29,7 @@ from openerp.addons.base_delivery_carrier_files.csv_writer import UnicodeWriter
 from xml.etree import ElementTree
 from xml.etree.ElementTree import Element
 from xml.etree.ElementTree import SubElement, tostring
-from xml.dom import minidom
-import xml.etree.cElementTree as ET
+
 
 class UPSLine(BaseLine):
     fields = (('name', 30),

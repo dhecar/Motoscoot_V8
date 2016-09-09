@@ -35,12 +35,11 @@ Sub-module for Base Delivery Carrier Files.
 Definition of the delivery carrier file for "Nacex".
 
     """,
-    'author': 'David Hernández',
+    'author': 'SinergiaInformatica. David Hernández',
     'license': 'AGPL-3',
-    'website': 'http://www.sinergianinformatica.net',
+    'website': 'http://www.sinergiainformatica.net',
     'depends': ['base_delivery_carrier_files', 'sine_delivery_extension'],
-    'init_xml': [],
-    'update_xml': ['carrier_file_view.xml'],
+    'data': ['views/carrier_file_view.xml'],
     'demo_xml': [],
     'test': [],
     'images': [],
