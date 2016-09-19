@@ -21,7 +21,6 @@
 
 from openerp import models, fields, api, exceptions
 import openerp.addons.decimal_precision as dp
-from openerp import SUPERUSER_ID
 
 
 class ProductTemplate(models.Model):
@@ -59,12 +58,13 @@ class ProductTemplate(models.Model):
                     # res[i][0]['qty'] = res[i][0]['qty'] - ads
             counter = 0
             qty = ""
+            qty_final = ""
             for location in res[i]:
                 counter += 1
-                qty += '[' + str(res[i][counter - 1]['loc']) + ":" + str(res[i][counter - 1]['qty']) + ']'
+                qty += '  ' + str(res[i][counter - 1]['loc']) + "=" + str(res[i][counter - 1]['qty']) + '    '
+            qty_final += qty
 
-            res[i] = qty
-            i.stock_by_loc = res.values()
+            i.stock_by_loc = qty_final
 
 
     stock_by_loc = fields.Char(compute='StockByLocation', string='Stocks')
@@ -86,7 +86,7 @@ class ProductProduct(models.Model):
 
     # STOCK IN EACH LOCATION
     @api.model
-    def StockByLocation(self):
+    def _compute_stock_by_location(self):
 
         db_obj = self.pool['base.external.dbsource']
         location_id = 12
@@ -115,14 +115,15 @@ class ProductProduct(models.Model):
                     # res[i][0]['qty'] = res[i][0]['qty'] - ads
             counter = 0
             qty = ""
+            qty_final = ""
             for location in res[i]:
                 counter += 1
-                qty += '[' + str(res[i][counter - 1]['loc']) + ":" + str(res[i][counter - 1]['qty']) + ']'
+                qty += '  ' + str(res[i][counter - 1]['loc']) + "=" + str(res[i][counter - 1]['qty']) + '    '
 
-            res[i] = qty
-        return res.values()
+            qty_final += qty
+            stock_by_loc = qty_final
 
-    stock_by_loc = fields.Char(compute=StockByLocation, string='Stocks')
+    stock_by_loc = fields.Char(compute=_compute_stock_by_location, string='Stocks')
     internal_note = fields.Text(string='Nota Interna', translate=True)
     shared = fields.Boolean(string='Shared', help='Share this product with SCTV?')
     pvp_fabricante = fields.Float(string='Precio Base TT',

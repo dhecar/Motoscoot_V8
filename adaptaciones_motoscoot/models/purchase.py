@@ -21,11 +21,56 @@
 from openerp import models, fields, api, exceptions
 
 
+
+
+
+
+
 class PurchaseOrderLine(models.Model):
     _inherit = 'purchase.order.line'
 
+    # STOCK IN EACH LOCATION
+    @api.model
+    def _compute_stock_by_location(self):
 
-    sum_stock = fields.Char(related='product_id.stock_by_loc', string='Stocks')
+        # db_obj = self.pool['base.external.dbsource']
+
+        res = {}
+        for line in self:
+            if line.product_id:
+                product = line.product_id.id
+                location_id = 12
+                # ads = db_obj.get_stock(cr, SUPERUSER_ID, ids, product, location_id,
+                #                       context=context)
+
+                self.env.cr.execute(""" SELECT SUM(qty) AS QTY, CASE
+                                    WHEN location_id='12' THEN 'G'
+                                    WHEN location_id='19' THEN 'B'
+                                    WHEN location_id='15' THEN 'P'
+                                    END AS LOC FROM stock_quant
+                                    WHERE (location_id ='12' OR location_id ='19' OR location_id='15')
+                                    AND product_id = '%s' GROUP BY location_id ORDER BY location_id""" % product)
+                res[line.id] = self.env.cr.dictfetchall()
+
+                if not res[line.id]:
+                    res[line.id] = []
+                else:
+                    # GRN
+                    if res[line.id][0]['loc'] == 'G':
+                        # res[line.id][0]['qty'] = res[line.id][0]['qty'] - ads
+                        res[line.id][0]['qty'] = res[line.id][0]['qty']
+                counter = 0
+                qty = ""
+                qty_final = ""
+                for location in res[line.id]:
+                    counter += 1
+                    qty += '  ' + str(res[line.id][counter - 1]['loc']) + "=" + str(
+                        res[line.id][counter - 1]['qty']) + '    '
+                qty_final += qty
+
+                line.stock_by_loc = qty_final
+
+    stock_by_loc = fields.Char(compute=_compute_stock_by_location, string='Stocks')
     incoming = fields.Float(related='product_id.incoming_qty',string='IN')
     outgoing = fields.Float(related='product_id.outgoing_qty', string='OUT')
 
