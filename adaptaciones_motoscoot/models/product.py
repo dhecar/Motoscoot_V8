@@ -31,7 +31,7 @@ class ProductTemplate(models.Model):
     @api.model
     def StockByLocation(self):
 
-        db_obj = self.pool['base.external.dbsource']
+        #db_obj = self.pool['base.external.dbsource']
         location_id = 12
         res = {}
         for i in self:
