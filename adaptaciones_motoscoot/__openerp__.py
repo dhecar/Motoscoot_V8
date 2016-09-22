@@ -19,6 +19,8 @@
               "views/stock_moves_view.xml",
               "views/partner_motoscoot_view.xml",
               "views/picking_extension_view.xml",
+              "views/partner_category_view.xml",
+              "views/company_view.xml",
               "security/security.xml",
               "security/ir.model.access.csv",
               "views/restrict/product_restrict_view.xml",

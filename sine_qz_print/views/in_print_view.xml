@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+
+        <!-- New Button to print labels on INCOMING PRODUCT-->
+
+
+        <record id="stock_partial_picking_form_label_print" model="ir.ui.view">
+            <field name="name">stock.partial.picking.form.label.print</field>
+            <field name="model">stock.partial.picking</field>
+            <field name="inherit_id" ref="stock.stock_partial_picking_form" />
+            <field name="arch" type="xml">
+                    <xpath expr="//button[@string='_Transfer']" position="after">
+                      <button name="do_partial_print" string="Recibir/Imprimir Etiquetas" type="object" class="oe_highlight" />
+                 </xpath>
+            </field>
+        </record>
+
+
+
+    </data>
+</openerp>

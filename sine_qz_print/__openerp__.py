@@ -28,6 +28,7 @@
     "summary": """Print labels to EPL""",
     "depends": ['product', 'base_report_to_printer'],
     "data": ['views/qz_print_config_view.xml', 'views/product_view.xml'],
+    #,'views/in_print_view.xml'],
     "installable": True,
     "auto_install": False,
 }

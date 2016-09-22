@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+<template id="motoscoot_layout" inherit_id="web.layout" primary="True">
+    <!-- Add report attributes -->
+    <xpath expr="//html" position="attributes">
+        <attribute name="t-att-data-report-margin-top">data_report_margin_top if data_report_margin_top else None</attribute>
+        <attribute name="t-att-data-report-header-spacing">data_report_header_spacing if data_report_header_spacing else None</attribute>
+        <attribute name="t-att-data-report-dpi">data_report_dpi if data_report_dpi else None</attribute>
+    </xpath>
+    <!-- Add report style -->
+    <xpath expr="//head" position="inside">
+        <link href="/web/static/lib/bootstrap/css/bootstrap.css" rel="stylesheet"/>
+        <link href="/website/static/src/css/website.css" rel="stylesheet"/>
+        <link href="/web/static/lib/fontawesome/css/font-awesome.css" rel="stylesheet"/>
+        <style type="text/css">
+            <t t-call="qweb_reports_motoscoot.style"/>
+        </style>
+    </xpath>
+    <!-- Remove conflicting style -->
+    <xpath expr="//head/link[@href='/web/static/src/css/full.css']" position="replace"></xpath>
+</template>
+
+<template id="html_container">
+    <t t-set="body_classname" t-value="'container'"/>
+    <t t-call="qweb_reports_motoscoot.motoscoot_layout">
+        <t t-raw="0"/>
+    </t>
+</template>
+
+<template id="style">
+    body {
+        color: #000 !important;
+        word-wrap: break-word;
+    }
+    .border-black td {
+        border-top: 1px solid black !important;
+    }
+    .table-condensed > thead > tr > th {
+        border-bottom: 1px solid black !important;
+    }
+    .table-condensed > tbody > tr {
+        page-break-inside: avoid !important;
+    }
+    .zero_min_height {
+        min-height: 0px !important;
+    }
+</template>
+
+<template id="motoscoot_external_layout">
+    <!-- Multicompany -->
+    <t t-if="o and 'company_id' in o">
+        <t t-set="company" t-value="o.company_id"></t>
+    </t>
+    <t t-if="not o or not 'company_id' in o">
+        <t t-set="company" t-value="res_company"></t>
+    </t>
+
+    <t t-call="qweb_reports_motoscoot.motoscoot_layout_header" />
+    <t t-raw="0" />
+    <t t-call="qweb_reports_motoscoot.motoscoot_layout_footer" />
+</template>
+
+<template id="motoscoot_layout_header">
+    <div class="header">
+        <div class="row">
+            <div class="col-xs-3">
+                <img t-if="o.partner_id.category_id.taller == True" t-att-src="'data:image/png;base64,%s' % company.logo_taller" style="max-height: 45px;"/>
+                <img t-if="o.partner_id.category_id.taller == False" t-att-src="'data:image/png;base64,%s' % company.logo_motoscoot" style="max-height: 45px;"/>
+            </div>
+        </div>
+        <div class="row zero_min_height">
+            <div class="col-xs-12">
+                <div style="border-bottom: 1px solid black;"></div>
+            </div>
+        </div>
+
+        <!--CABECERA FIJA-->
+
+
+        <div class="row">
+            <!-- Datos PEDIDOS-->
+            <t t-if="'partner_shipping_id' in o.fields_get()">
+                <div class="col-xs-4">
+                        <strong t-if="o.partner_shipping_id == o.partner_invoice_id">Invoice and shipping address:</strong>
+                        <strong t-if="o.partner_shipping_id != o.partner_invoice_id">Invoice address:</strong>
+                        <div t-field="o.partner_invoice_id"
+                            t-field-options='{"widget": "contact", "fields": ["address", "name", "phone", "fax"], "no_marker": true}'/>
+                    <p t-if="o.partner_id.vat">VAT: <span t-field="o.partner_id.vat"/></p>
+                    <div t-if="o.partner_shipping_id != o.partner_invoice_id" class="mt8">
+                        <strong>Shipping address:</strong>
+                        <div t-field="o.partner_shipping_id"
+                            t-field-options='{"widget": "contact", "fields": ["address", "name", "phone", "fax"], "no_marker": true}'/>
+                        <p t-if="o.partner_id.vat">VAT: <span t-field="partner_id.vat"/></p>
+                    </div>
+                </div>
+                <div class="col-xs-4 ">
+                    <div t-field="o.partner_id"
+                        t-field-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": true}' />
+                </div>
+            </t>
+            <!-- Datos FACTURAS-->
+            <t t-if="'not partner_shipping_id' in o.fields_get()">
+
+                <div class="col-xs-4">
+                    <div t-field="o.partner_id"
+                     t-field-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": true}' />
+                    <p t-if="o.partner_id.vat">VAT: <span t-field="o.partner_id.vat"/></p>
+                </div>
+            </t>
+
+
+                <!--Taller-->
+                <t t-if="o.partner_id.category_id.taller == True">
+                  <div class="col-xs-8-offset-2 text-right">
+                    <table>
+                        <tr><td><b><span  t-field="o.company_id.partner_id.name"/></b></td></tr>
+                        <tr><td>NIF:<span t-field="o.company_id.partner_id.vat"/></td></tr>
+
+                        <tr><td><b>Toptaller</b></td></tr>
+                        <tr><td><span t-field="o.company_id.partner_id.street"/></td></tr>
+                        <tr><td><span t-field="o.company_id.partner_id.zip"/></td></tr>
+                        <tr>
+                            <td>
+                                <span t-field="o.company_id.partner_id.state_id.name"/>
+                                (<span t-field="o.company_id.partner_id.city"/>)
+                                <span t-field="o.company_id.partner_id.country_id.name"/>
+                            </td>
+                        </tr>
+
+                        <tr><td>Telf: (+34) 972 41 38 93</td></tr>
+                        <tr><td>Fax: (+34) 972 48 68 30</td></tr>
+                        <tr><td>mail: info@toptaller.com</td></tr>
+
+
+                    </table>
+                    </div>
+                </t>
+                <!--General-->
+                <t t-if="o.partner_id.category_id.taller == False">
+                    <div class="col-xs-8-offset-2 text-right">
+                    <table>
+                        <tr><td><b><span  t-field="o.company_id.partner_id.name"/> </b></td></tr>
+                        <tr><td>NIF:<span t-field="o.company_id.partner_id.vat"/></td></tr>
+
+                        <tr><td><b>Motoscoot</b></td></tr>
+                        <tr><td><span t-field="o.company_id.partner_id.street"/></td></tr>
+                        <tr><td><span t-field="o.company_id.partner_id.zip"/></td></tr>
+                        <tr>
+                            <td>
+                                <span t-field="o.company_id.partner_id.state_id.name"/>
+                                (<span t-field="o.company_id.partner_id.city"/>)
+                                <span t-field="o.company_id.partner_id.country_id.name"/>
+                            </td>
+                        </tr>
+                        <tr><td>Telf: (+34) 972 41 38 80</td></tr>
+                        <tr><td>Fax: (+34) 972 48 68 30</td></tr>
+                        <tr><td>mail: info@motoscoot.net</td></tr>
+                    </table>
+                    </div>
+                </t>
+
+                </div>
+                <div class="row zero_min_height">
+                        <div class="col-xs-12">
+                       </div>
+                </div>
+
+            </div>
+           <!-- END-->
+        <!-- FIN CABECERA-->
+
+</template>
+
+<template id="motoscoot_layout_footer">
+    <div class="footer">
+        <div class="row">
+        <div class="col-xs-12" style="align:center">
+                <img t-if="o.partner_id.category_id.taller == True" t-att-src="'data:image/png;base64,%s' % company.pie_taller" style="max-height: 80px;"/>
+                <img t-if="o.partner_id.category_id.taller == False" t-att-src="'data:image/png;base64,%s' % company.pie_motoscoot" style="max-height: 80px;"/>
+        </div>
+        </div>
+        <div class="text-center" style="border-top: 1px solid black;">
+            <ul t-if="not company.custom_footer" class="list-inline">
+                <li t-if="o.partner_id.category_id.taller == True">
+                    <p class="col-xs-12" style="font-size:8px">Domiciliación bancaria: <b>Banco Sabadell Atlántico</b> ES52 0081 0135 3500 0109 7315BSABESBB | <b>La Caixa</b> ES55 2100 8201 2702 0002 7559CAIXESBBXXX </p>
+                    <p class="col-xs-12" style="font-size:8px">Ms Properformance2008, S.L. - Registro Mercantil Girona, Tomo 2664, Libro 0, Folio 114, Sección 8, Hoja GI 46003, Inscripción 1 - CIF B17990755</p>
+                </li>
+                <li t-if="o.partner_id.category_id.taller == False">
+                   <p class="col-xs-12" style="font-size:8px">Domiciliación bancaria: <b>Banco Sabadell Atlántico</b> ES76 0081 0135 3000 0110 3918BSABESBBXXX | <b>La Caixa</b> ES55 2100 8201 2702 0002 7559CAIXESBBXXX</p>
+                   <p class="col-xs-12" style="font-size:8px">Ms Properformance2008, S.L. - Registro Mercantil Girona, Tomo 2664, Libro 0, Folio 114, Sección 8, Hoja GI 46003, Inscripción 1 - CIF B17990755 </p>
+                </li>
+            </ul>
+
+            <t t-if="company.custom_footer">
+                <span t-raw="company.rml_footer"/>
+            </t>
+
+            <ul class="list-inline">
+                <li><span class="page" style="font-size:9px"/></li>
+                <li>/</li>
+                <li><span class="topage" style="font-size:9px"/></li>
+            </ul>
+        </div>
+    </div>
+</template>
+
+<template id="internal_layout">
+    <!-- Multicompany -->
+    <t t-if="o and 'company_id' in o">
+        <t t-set="company" t-value="o.company_id"></t>
+    </t>
+    <t t-if="not o or not 'company_id' in o">
+        <t t-set="company" t-value="res_company"></t>
+    </t>
+
+    <div class="header">
+        <div class="row">
+            <div class="col-xs-3">
+                <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d %H:%M')"/>
+            </div>
+            <div class="col-xs-2 col-xs-offset-2 text-center">
+                <span t-esc="company.name"/>
+            </div>
+            <div class="col-xs-2 col-xs-offset-3 text-right">
+                <ul class="list-inline">
+                    <li><span class="page"/></li>
+                    <li>/</li>
+                    <li><span class="topage"/></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <t t-raw="0" />
+</template>
+
+<template id="minimal_layout">
+    <t t-raw="'&lt;base href=%s&gt;' % base_url"/>
+    &lt;!DOCTYPE html&gt;
+    <html style="height: 0;">
+        <head>
+            <link href="/report/static/src/css/reset.min.css" rel="stylesheet"/>
+            <link href="/web/static/lib/bootstrap/css/bootstrap.css" rel="stylesheet"/>
+            <link href="/website/static/src/css/website.css" rel="stylesheet"/>
+            <link href="/web/static/lib/fontawesome/css/font-awesome.css" rel="stylesheet"/>
+            <style type='text/css'><t t-raw="css"/></style>
+            <t t-if="subst is True">
+                <script>
+                    function subst() {
+                        var vars = {};
+                        var x = document.location.search.substring(1).split('&amp;');
+                        for (var i in x) {
+                            var z = x[i].split('=', 2);
+                            vars[z[0]] = unescape(z[1]);
+                        }
+                        var x=['frompage', 'topage', 'page', 'webpage', 'section', 'subsection', 'subsubsection'];
+                        for (var i in x) {
+                            var y = document.getElementsByClassName(x[i]);
+                            for (var j=0; j&lt;y.length; ++j)
+                                y[j].textContent = vars[x[i]];
+                        }
+                    }
+                </script>
+            </t>
+        </head>
+        <body class="container" onload="subst()">
+            <t t-raw="body"/>
+        </body>
+    </html>
+</template>
+
+</data>
+</openerp>

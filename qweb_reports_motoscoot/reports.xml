@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <report
+            id="report_sale_order_motoscoot"
+            string="Custom Quotation / Order"
+            model="sale.order"
+            report_type="qweb-pdf"
+            file="qweb_reports_motoscoot.sale_order_report"
+            name="qweb_reports_motoscoot.report_sales_motoscoot"
+        />
+
+        <report
+            id="report_invoice_motoscoot"
+            string="Custom Invoice"
+            model="account.invoice"
+            report_type="qweb-pdf"
+            file="qweb_reports_motoscoot.invoice_report"
+            name="qweb_reports_motoscoot.invoice_motoscoot"
+            attachment_use="True"
+            attachment="(object.state in ('open','paid')) and ('INV'+(object.number or '').replace('/','')+'.pdf')"
+        />
+    </data>
+
+
+
+</openerp>

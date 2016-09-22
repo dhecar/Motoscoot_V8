@@ -1,0 +1,19 @@
+<openerp>
+	<data>
+	    <record model="ir.ui.view" id="partner_category_inh_form_view">
+            <field name="name">partner.category.inh</field>
+            <field name="model">res.partner.category</field>
+            <field name="inherit_id" ref="base.view_partner_category_form" />
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+
+		        <field name="parent_id" position="before">
+			        <field name="taller"/>
+                 </field>
+            </field>
+         </record>
+
+
+
+	</data>
+</openerp>
