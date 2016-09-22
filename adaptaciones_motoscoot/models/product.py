@@ -88,7 +88,7 @@ class ProductProduct(models.Model):
     @api.model
     def _compute_stock_by_location(self):
 
-        db_obj = self.pool['base.external.dbsource']
+        #db_obj = self.pool['base.external.dbsource']
         location_id = 12
         res = {}
         for i in self:
