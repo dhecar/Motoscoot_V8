@@ -14,9 +14,10 @@
     """,
     'author': 'SinergiaInformatica',
     'website': 'http://sinergiainformatica.net',
-    'depends': ['report','sale','account'],
+    'depends': ['report','sale','account','stock'],
     'data': ['views/sale_order_report.xml',
              'views/invoice_report.xml',
+             'views/picking_report.xml',
              'views/layouts.xml',
              'reports.xml'
              ],

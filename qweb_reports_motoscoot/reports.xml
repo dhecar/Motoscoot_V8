@@ -20,6 +20,18 @@
             attachment_use="True"
             attachment="(object.state in ('open','paid')) and ('INV'+(object.number or '').replace('/','')+'.pdf')"
         />
+
+
+         <report
+            id="picking_report_motoscoot"
+            string="Custom Picking"
+            model="stock.picking"
+            report_type="qweb-pdf"
+            file="qweb_reports_motoscoot.picking_report"
+            name="qweb_reports_motoscoot.motoscoot_report_picking"
+        />
+
+
     </data>
 
 
