@@ -5,8 +5,8 @@
     "author": "David Hernández",
     "category": "Generic Modules/Others",
     "website": "http://sinergiainformatica.net",
-    "description": """ * Extiende el creador de tarifas para soportar la aplicacion de la misma
-                      a la marca del producto. Requiere de product_brand.
+    "description": """ * Extiende el creador de tarifas para soportar la aplicacion de la misma \
+                      a la marca del producto. Requiere de product_brand. \
                       * Añade relación entre usuario y tarifa""",
     "depends": ["product", "product_brand", "base"],
     "data": ["views/pricelist_view.xml"],

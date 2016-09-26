@@ -8,8 +8,7 @@
     "description": "This module update the product stock throught API to Magento websites that have"
                    " Advanced Inventory module from Wyomind.",
     "depends": ['stock', 'sale_to_invoice'],
-    "update_xml": ["wyomind_update_view.xml"],
-    "data": ['security/security.xml', 'security/ir.model.access.csv'],
+    "data": ['security/security.xml', 'security/ir.model.access.csv',"wyomind_update_view.xml"],
     "active": True,
     "installable": True
 }

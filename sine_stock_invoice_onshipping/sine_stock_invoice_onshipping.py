@@ -22,44 +22,40 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-
-from openerp.osv import fields, osv
 from openerp import netsvc
+from openerp.osv import osv
 from openerp.tools.translate import _
 
 
 class stock_invoice_onshipping(osv.osv_memory):
     _inherit = 'stock.invoice.onshipping'
 
-    def create_invoice(self, cr, uid, ids, context=None):
-        res = super(stock_invoice_onshipping, self).create_invoice(cr, uid, ids, context=context)
-        invoice_ids = []
-        invoice_ids += res.values()
-        if invoice_ids:
+    def open_invoice(self, cr, uid, ids, context=None):
+        res = super(stock_invoice_onshipping, self).open_invoice(cr, uid, ids, context=context)
+        if ids:
             wf_service = netsvc.LocalService("workflow")
-            wf_service.trg_validate(uid, 'account.invoice', invoice_ids[0], 'invoice_open', cr)
+            wf_service.trg_validate(uid, 'account.invoice', ids[0], 'invoice_open', cr)
         return res
 
     def validate_invoice(self, cr, uid, ids, context=None):
         if context is None:
             context = {}
-        invoice_ids = []
-        res = self.create_invoice(cr, uid, ids, context=context)
-        invoice_ids += res.values()
-        if not invoice_ids:
+        res = self.open_invoice(cr, uid, ids, context=context)
+        if not ids:
             raise osv.except_osv(_('Error!'), _('Please create Invoices.'))
-        if invoice_ids:
-            data = self.pool.get('account.invoice').read(cr, uid, [invoice_ids[0]], [], context=None)
+        if ids:
+            data = self.pool.get('account.invoice').read(cr, uid, [ids[0]], [], context=None)
             datas = {
-                'ids': invoice_ids,
+                'ids': ids,
                 'model': 'account.invoice',
                 'form': data
             }
+
             wf_service = netsvc.LocalService("workflow")
 
             # Pay Invoice
 
-            wf_service.trg_validate(uid, 'account.voucher', invoice_ids[0], 'proforma_voucher', cr)
+            wf_service.trg_validate(uid, 'account.voucher', ids[0], 'proforma_voucher', cr)
 
             return {
                 'type': 'ir.actions.report.xml',
@@ -70,3 +66,4 @@ class stock_invoice_onshipping(osv.osv_memory):
                 'context': context
             }
 
+stock_invoice_onshipping()

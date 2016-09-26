@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data noupdate="0">
+<record id="group_marketing_user" model="res.groups">
+    <field name="name">Marketing Comments User</field>
+</record>
+
+
+<record id="group_marketing_admin" model="res.groups">
+    <field name="name">Marketing Comments Manager</field>
+</record>
+
+
+</data>
+</openerp>

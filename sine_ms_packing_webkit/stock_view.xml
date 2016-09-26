@@ -14,7 +14,7 @@
         </record>
 
         <act_window id="print_packing" name="Print Selected Packings"
-                src_model="stock.picking.out"
+                src_model="stock.picking"
                 res_model="set.printed"
                 view_mode="form"
                 view_type="form"
@@ -26,10 +26,10 @@
 
     </data>
 
-    <data noupdate="0">
+ <!--   <data noupdate="0">
         <record id="view_picking_int_form" model="ir.ui.view">
             <field name="name">stock.picking.int.form</field>
-            <field name="model">stock.picking.in</field>
+            <field name="model">stock.picking.</field>
             <field name="inherit_id" ref="delivery.view_delivery_order_inherit_stock"/>
             <field name="arch" type="xml">
                 <xpath expr="/form/header//button[@string='Print Delivery Order' and @states='confirmed,assigned']" position="attributes">
@@ -40,6 +40,6 @@
                 </xpath>
             </field>
         </record>
-    </data>
+    </data>-->
 
 </openerp>

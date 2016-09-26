@@ -34,7 +34,7 @@ class SetPrinted(osv.osv):
 
     def get_set(self, cr, uid, ids, context=None):
 
-        pick_obj = self.pool.get('stock.picking.out')
+        pick_obj = self.pool.get('stock.picking')
         record_ids = context and context.get('active_ids', []) or []
         for pick in pick_obj.browse(cr, uid, record_ids, context=context):
             if pick.is_printed is False:
@@ -45,7 +45,7 @@ class SetPrinted(osv.osv):
             'type': 'ir.actions.report.xml',
             'report_name': 'webkit.motoscoot_picking',
             'datas': {
-                'model': 'stock.picking.out',
+                'model': 'stock.picking',
                 'ids': record_ids,
             }
         }

@@ -1,4 +1,3 @@
-# import one2many_sorted
 from openerp import models, fields, api, exceptions
 
 class stock_picking(models.Model):
@@ -13,6 +12,7 @@ class stock_picking(models.Model):
     carrier = fields.Many2one(related='carrier_id')
     carrier_ref = fields.Char(related='carrier_tracking_ref')
     paquets = fields.Integer(related='number_of_packages')
+    sale =  fields.Many2one(related='sale_id', string='Orden Venta')
 
 class stock_move(models.Model):
     _inherit = 'stock.move'

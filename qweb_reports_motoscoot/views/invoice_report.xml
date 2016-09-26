@@ -22,8 +22,8 @@
                     <p t-if="o.partner_id.vat">NIF: <span t-field="o.partner_id.vat"/></p>
                 </div>
                 <div class="col-xs-4"></div>
-                 <div t-if="o.comment_id" class="col-xs-4" style="font-size:small">
-                        <span t-field="o.comment_id.comment" />
+                 <div t-if="o.sale_ids.comment_id.comment" class="col-xs-4" style="font-size:small">
+                        <span t-field="o.sale_ids.comment_id.comment" />
                  </div>
              </div>
 

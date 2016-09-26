@@ -20,7 +20,9 @@
                             t-field-options='{"widget": "contact", "fields": ["address", "name", "phone", "fax"], "no_marker": true}'/>
                         <p t-if="o.partner_id.vat">VAT: <span t-field="o.partner_id.vat"/></p>
                     </div>
-                    <div t-if="o.comment_id" class="col-xs-4" style="font-size:small">
+                    <div t-if="not o.partner_shipping_id != o.partner_invoice_id" class="col-xs-4"></div>
+
+                    <div t-if="o.comment_id.comment" class="col-xs-4" style="font-size:small">
                         <span t-field="o.comment_id.comment" />
                     </div>
 

@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-
 import time
 from openerp.tools.translate import _
 import openerp.addons.decimal_precision as dp
