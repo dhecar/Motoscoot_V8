@@ -66,6 +66,20 @@ class ProductTemplate(models.Model):
 
             i.stock_by_loc = qty_final
 
+    @api.model
+    def _compute_total_qty(self):
+
+        res = {}
+        for i in self:
+            self.env.cr.execute(""" SELECT sum(qty) as SUMA FROM stock_quant
+                                    WHERE (location_id ='12' OR location_id ='19' OR location_id='15')
+                                    AND product_id = '%s' """ % i.id)
+
+            for r in self.env.cr.fetchone():
+                res[i] = r
+            i.qty_total = res
+
+
 
     stock_by_loc = fields.Char(compute='StockByLocation', string='Stocks')
     internal_note = fields.Text(string='Nota Interna', translate=True)
@@ -75,6 +89,8 @@ class ProductTemplate(models.Model):
     internet = fields.Boolean(string='Internet?', help='Está activo en Magento?')
     label_print = fields.Boolean(string='Label Print?', help='Se debe imprimir la etiqueta en albaranes de entrada?',
                                  default='True')
+    qty_total = fields.Integer(compute=_compute_total_qty, string='Stock Total')
+
 
 
 ProductTemplate()
@@ -123,6 +139,21 @@ class ProductProduct(models.Model):
             qty_final += qty
             i.stock_by_loc = qty_final
 
+    @api.model
+    def _compute_total_qty(self):
+
+        res = {}
+        for i in self:
+            self.env.cr.execute(""" SELECT sum(qty) as SUMA FROM stock_quant
+                                WHERE (location_id ='12' OR location_id ='19' OR location_id='15')
+                                AND product_id = '%s' """ % i.id)
+
+            for r in  self.env.cr.fetchone():
+                res[i] = r
+            i.qty_total = res
+
+
+
     stock_by_loc = fields.Char(compute=_compute_stock_by_location, string='Stocks')
     internal_note = fields.Text(string='Nota Interna', translate=True)
     shared = fields.Boolean(string='Shared', help='Share this product with SCTV?')
@@ -131,6 +162,7 @@ class ProductProduct(models.Model):
     internet = fields.Boolean(string='Internet?', help='Está activo en Magento?')
     label_print = fields.Boolean(string='Label Print?', help='Se debe imprimir la etiqueta en albaranes de entrada?',
                                  default='True')
+    qty_total = fields.Integer(compute=_compute_total_qty, string='Stock Total')
 
 
 ProductProduct()
