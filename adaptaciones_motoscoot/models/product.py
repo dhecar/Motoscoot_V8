@@ -69,15 +69,15 @@ class ProductTemplate(models.Model):
     @api.model
     def _compute_total_qty(self):
 
-        res = {}
-        for i in self:
-            self.env.cr.execute(""" SELECT sum(qty) as SUMA FROM stock_quant
-                                    WHERE (location_id ='12' OR location_id ='19' OR location_id='15')
-                                    AND product_id = '%s' """ % i.id)
 
-            for r in self.env.cr.fetchone():
-                res[i] = r
-            i.qty_total = res
+        self.env.cr.execute(""" SELECT sum(qty) as SUMA FROM stock_quant
+                                    WHERE (location_id ='12' OR location_id ='19' OR location_id='15')
+                                    AND product_id = '%s' """ % self.id)
+        q= self.env.cr.fetchone()
+
+        self.qty_total = q[0]
+
+
 
 
 
@@ -142,17 +142,15 @@ class ProductProduct(models.Model):
     @api.model
     def _compute_total_qty(self):
 
-        res = {}
+        self.env.cr.execute(""" SELECT sum(qty) as SUMA FROM stock_quant
+                                        WHERE (location_id ='12' OR location_id ='19' OR location_id='15')
+                                        AND product_id = '%s' """ % self.id)
+
+        q = {}
         for i in self:
-            self.env.cr.execute(""" SELECT sum(qty) as SUMA FROM stock_quant
-                                WHERE (location_id ='12' OR location_id ='19' OR location_id='15')
-                                AND product_id = '%s' """ % i.id)
+            q[i] = self.env.cr.fetchone()
 
-            for r in  self.env.cr.fetchone():
-                res[i] = r
-            i.qty_total = res
-
-
+            i.qty_total = q
 
     stock_by_loc = fields.Char(compute=_compute_stock_by_location, string='Stocks')
     internal_note = fields.Text(string='Nota Interna', translate=True)
