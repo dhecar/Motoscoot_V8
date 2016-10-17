@@ -43,8 +43,7 @@
 
 
 
-
-        <record model="ir.ui.view" id="inherit_res_users_pricelist_view">
+    <record model="ir.ui.view" id="inherit_res_users_pricelist_view">
             <field name="name">inherit.res.users.pricelist.view</field>
             <field name="model">res.users</field>
             <field name="inherit_id" ref="base.view_users_form" />
