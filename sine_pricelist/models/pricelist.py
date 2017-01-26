@@ -27,7 +27,6 @@ from openerp.tools.translate import _
 from itertools import chain
 
 
-
 def rounding(f, r):
     if not r:
         return f
@@ -45,12 +44,11 @@ class ProductPricelistItem(models.Model):
 ProductPricelistItem()
 
 
-class product_pricelist(osv.osv):
+class ProductPriceList(osv.osv):
     _name = "product.pricelist"
     _inherit = "product.pricelist"
 
     user_link_ids = fields.Many2many('res.users', 'pricelist_partner_rel', 'pricelist_id', 'user_id', required=True)
-
 
     def _price_rule_get_multi(self, cr, uid, pricelist, products_by_qty_by_partner, context=None):
         context = context or {}
@@ -74,21 +72,18 @@ class product_pricelist(osv.osv):
         if not version:
             raise osv.except_osv(_('Warning!'),
                                  _("At least one pricelist has no active version !\nPlease create or activate one."))
-        brand_id = None
+        brand_id = {}
         categ_ids = {}
         for p in products:
             categ = p.categ_id
             # BRAND
             if p.product_brand_id:
-                brand_id = p.product_brand_id.id
-
-
+                brand_id = [p.product_brand_id.id]
 
             while categ:
                 categ_ids[categ.id] = True
                 categ = categ.parent_id
         categ_ids = categ_ids.keys()
-
 
         is_product_template = products[0]._name == "product.template"
         if is_product_template:
@@ -101,7 +96,6 @@ class product_pricelist(osv.osv):
             prod_ids = [product.id for product in products]
             prod_tmpl_ids = [product.product_tmpl_id.id for product in products]
 
-
         # Load all rules. Added brand_id in selection.
         cr.execute(
             'SELECT i.id '
@@ -109,7 +103,7 @@ class product_pricelist(osv.osv):
             'WHERE (product_tmpl_id IS NULL OR product_tmpl_id = any(%s)) '
             'AND (product_id IS NULL OR (product_id = any(%s))) '
             'AND ((categ_id IS NULL) OR (categ_id = any(%s))) '
-            'AND ((brand_id IS NULL) OR (brand_id = %s)) '
+            'AND ((brand_id IS NULL) OR (brand_id = any(%s))) '
             'AND (price_version_id = %s) '
             'ORDER BY sequence, min_quantity desc',
             (prod_tmpl_ids, prod_ids, categ_ids, brand_id, version.id))
@@ -142,8 +136,9 @@ class product_pricelist(osv.osv):
 
             for rule in items:
 
-                if rule.brand_id and product.product_brand_id.id != rule.brand_id:
+                if rule.brand_id.id and product.product_brand_id.id != rule.brand_id.id:
                     continue
+
                 if rule.min_quantity and qty_in_product_uom < rule.min_quantity:
                     continue
                 if is_product_template:
@@ -242,10 +237,13 @@ class product_pricelist(osv.osv):
             # Final price conversion to target UoM
             price = product_uom_obj._compute_price(cr, uid, price_uom_id, price, qty_uom_id)
 
+
             results[product.id] = (price, rule_id)
+
         return results
 
-product_pricelist()
+
+ProductPriceList()
 
 
 class ResUsers(models.Model):
