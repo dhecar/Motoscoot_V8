@@ -90,7 +90,7 @@ class ProductTemplate(models.Model):
     label_print = fields.Boolean(string='Label Print?', help='Se debe imprimir la etiqueta en albaranes de entrada?',
                                  default='True')
     qty_total = fields.Integer(compute=_compute_total_qty, string='Stock Total')
-    locs_ids = fields.Many2many(comodel_name='extrainfo.locations',inverse_name='extra_loc', ondelete='restrict')
+    locs_ids = fields.Many2many(comodel_name='extrainfo.locations', ondelete='restrict')
 
 
 
