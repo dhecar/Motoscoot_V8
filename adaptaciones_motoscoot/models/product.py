@@ -90,6 +90,7 @@ class ProductTemplate(models.Model):
     label_print = fields.Boolean(string='Label Print?', help='Se debe imprimir la etiqueta en albaranes de entrada?',
                                  default='True')
     qty_total = fields.Integer(compute=_compute_total_qty, string='Stock Total')
+    locs_ids = fields.Many2Many(comodel_name='extrainfo.locations',inverse_name='extra_loc',string='Comment for the order', ondelete='restrict')
 
 
 
@@ -164,3 +165,12 @@ class ProductProduct(models.Model):
 
 
 ProductProduct()
+
+
+
+class ExtraInfoLocations(models.Model):
+    _name = "extrainfo.locations"
+    _description = "Add extra locations for products in your warehouse"
+    extra_loc = fields.Text(string='Extra Location', translate=True)
+
+ExtraInfoLocations()
