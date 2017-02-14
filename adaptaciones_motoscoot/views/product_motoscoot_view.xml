@@ -60,6 +60,21 @@
                     </field>
              </field>
      </record>
+
+     <record id="product_extra_locations_info" model="ir.ui.view">
+            <field name="name">product.extralocations_info</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_only_form_view"/>
+            <field name="arch" type="xml">
+                    <field name="purchase_ok" position="after">
+                        <field name="locs_ids"/>
+                    </field>
+
+            </field>
+        </record>
+
+
+
  </data>
 </openerp>
 
